@@ -1,5 +1,12 @@
 {
   "dependencies": {
-    "normalize-scss": "^7.0.1"
+    "normalize-scss": "^7.0.1",
+    "normalize.css": "^8.0.1"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.3.3"
+  },
+  "scripts": {
+    "dev": "tailwindcss -i ./src/css/main.css -o ./dist/style.css --watch"
   }
 }
