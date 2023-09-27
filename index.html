@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./dist/style.css">
   <title>Les petits plats</title>
 </head>
@@ -34,13 +35,25 @@
       </div>
     </div>
   </header>
-  <main>
+  <main class="mx-24">
     <!-- MultiSelects -->
-    <div>
-      <select>Ingrédients</select>
-      <select>Appareils</select>
-      <select>Ustensiles</select>
-      <div>
+    <div class="flex justify-between items-center mt-4">
+      <div class="flex gap-16">
+        <button class="flex items-center p-4 bg-white rounded-xl">
+          <p class="pr-16">Ingrédients</p>
+          <span class="fa-solid fa-chevron-down"></span>
+        </button>
+        <button class="flex items-center p-4 bg-white rounded-xl">
+          <p class="pr-16">Appareils</p>
+          <span class="fa-solid fa-chevron-down"></span>
+        </button>
+        <button class="flex items-center p-4 bg-white rounded-xl">
+          <p class="pr-16">Ustensiles</p>
+          <span class="fa-solid fa-chevron-down"></span>
+        </button>
+      </div>
+
+      <div class="count-recipes text-xl">
         3 recettes
       </div>
     </div>
@@ -50,6 +63,9 @@
 
     </div>
   </main>
+
+
+  <script src="./src/javascript/main.js"></script>
 </body>
 
 </html>
