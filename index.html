@@ -7,22 +7,31 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
     integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
     crossorigin="anonymous" referrerpolicy="no-referrer">
-  <!-- <link rel="stylesheet" href="./src/scss/main.css"> -->
-  <link rel="stylesheet" href="./dist/output.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./dist/style.css">
   <title>Les petits plats</title>
 </head>
 
 <body>
-  <header>
-    <img src="./src/assets/svg/logo-text.svg" alt="text">
-    <img src="./src/assets/svg/logo-icon.svg" alt="text">
+  <header class="flex flex-col items-center justify-center w-full">
+    <div class="flex absolute top-12 left-16 gap-1">
+      <img src="./src/assets/svg/logo-text.svg" alt="text">
+      <img src="./src/assets/svg/logo-icon.svg" alt="text">
+    </div>
 
-    <h1 class="text-3xl font-bold underline">Cherchez parmi plus de 1500 recettes du quotidien, simples et
-      délicieuses
-    </h1>
-    <div>
-      <input placeholder="Recherchez une recette, un ingrédient...">
-      <span class="fa-solid fa-search"></span>
+    <div class="w-8/12 m-auto items-center justify-center">
+      <div class="px-32 text-center">
+        <h1 class="h1-title mb-8">Cherchez parmi plus de 1500 recettes du quotidien, simples et
+          délicieuses
+        </h1>
+      </div>
+      <div class="relative m-auto">
+        <input class="w-full py-6 pl-9 rounded-xl" placeholder="Recherchez une recette, un ingrédient...">
+
+        <img src="./src/assets/svg/search-icon.svg" class="absolute right-2.5 bottom-2.5 bg-black rounded-xl p-3">
+      </div>
     </div>
   </header>
   <main>
