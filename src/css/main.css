@@ -6,8 +6,17 @@
 @tailwind utilities;
 
 :root {
+  --main-bg: #ededed;
   --bg-yellow: #ffd15b;
+
+  --font-anton: 'Anton', sans-serif;
+  --font-manrope: 'Manrope', sans-serif;
+
   --h1-size: 44px;
+}
+
+html {
+  background-color: var(--main-bg);
 }
 
 header {
@@ -25,5 +34,13 @@ header {
 .h1-title {
   color: var(--bg-yellow);
   font-size: var(--h1-size);
-  font-family: 'Anton', sans-serif;
+  font-family: var(--font-anton);
+}
+
+button > p {
+  font-family: var(--font-manrope);
+}
+
+.count-recipes {
+  font-family: var(--font-anton);
 }
