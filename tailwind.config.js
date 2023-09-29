@@ -4,6 +4,11 @@ module.exports = {
   presets: [],
   darkMode: 'media', // or 'class'
   theme: {
+    extend: {
+      boxShadow: {
+        recipe: '0px 4px 34px 30px rgba(0, 0, 0, 0.04)',
+      },
+    },
     accentColor: ({ theme }) => ({
       ...theme('colors'),
       auto: 'auto',
