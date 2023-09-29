@@ -61,3 +61,5 @@ const recipeFactory = (recipe) => {
     getRecipeCard,
   };
 };
+
+export default recipeFactory;
