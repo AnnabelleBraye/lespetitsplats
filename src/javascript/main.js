@@ -28,7 +28,6 @@ const recipes = [
         ingredient: 'Glaçons',
       },
     ],
-    time: 10,
     description:
       "Mettre les glaçons à votre goût dans le blender, ajouter le lait, la crème de coco, le jus de 2 citrons et le sucre. Mixer jusqu'à avoir la consistence désirée",
     appliance: 'Blender',
@@ -113,6 +112,50 @@ const recipes = [
     appliance: 'Cocotte',
     ustensils: ['couteau'],
   },
+  {
+    id: 1,
+    image: 'Recette01.jpg',
+    name: 'Limonade de Coco',
+    servings: 1,
+    ingredients: [
+      {
+        ingredient: 'Lait de coco',
+        quantity: 400,
+        unit: 'ml',
+      },
+      {
+        ingredient: 'Jus de citron',
+        quantity: 2,
+      },
+      {
+        ingredient: 'Crème de coco',
+        quantity: 2,
+        unit: 'cuillères à soupe',
+      },
+      {
+        ingredient: 'Sucre',
+        quantity: 30,
+        unit: 'grammes',
+      },
+      {
+        ingredient: 'Glaçons',
+      },
+    ],
+    description:
+      "Mettre les glaçons à votre goût dans le blender, ajouter le lait, la crème de coco, le jus de 2 citrons et le sucre. Mixer jusqu'à avoir la consistence désirée",
+    appliance: 'Blender',
+    ustensils: ['cuillère à Soupe', 'verres', 'presse citron'],
+  },
 ];
 
-const createItem = (item) => {};
+const init = () => {
+  const recipesListElt = document.getElementById('recipes-list');
+
+  recipes.forEach((recipe) => {
+    const recipeTemplate = recipeFactory(recipe);
+    const recipeElt = recipeTemplate.getRecipeCard();
+    recipesListElt.appendChild(recipeElt);
+  });
+};
+
+init();
