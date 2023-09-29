@@ -1051,10 +1051,6 @@ video {
   margin-top: 1.25rem;
 }
 
-.mt-11 {
-  margin-top: 2.75rem;
-}
-
 .mt-8 {
   margin-top: 2rem;
 }
@@ -1090,10 +1086,6 @@ video {
 
 .w-full {
   width: 100%;
-}
-
-.w-4\/12 {
-  width: 33.333333%;
 }
 
 .transform {
