@@ -8,6 +8,7 @@
 :root {
   --main-bg: #ededed;
   --bg-yellow: #ffd15b;
+  --grey-color: #7a7a7a;
 
   --font-anton: 'Anton', sans-serif;
   --font-manrope: 'Manrope', sans-serif;
@@ -35,6 +36,35 @@ header {
   color: var(--bg-yellow);
   font-size: var(--h1-size);
   font-family: var(--font-anton);
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: 400;
+  font-family: var(--font-anton);
+}
+
+h3 {
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font-manrope);
+  text-transform: uppercase;
+  color: var(--grey-color);
+  padding-bottom: 14px;
+  letter-spacing: 0.0675em;
+}
+
+p {
+  font-size: 14px;
+  font-family: var(--font-manrope);
+  font-weight: 500;
+  color: #1b1b1b;
+}
+
+p + span {
+  font-size: 14px;
+  font-family: var(--font-manrope);
+  color: var(--grey-color);
 }
 
 button > p {
