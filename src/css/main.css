@@ -61,7 +61,7 @@ p {
   color: #1b1b1b;
 }
 
-p + span {
+p + div > span {
   font-size: 14px;
   font-family: var(--font-manrope);
   color: var(--grey-color);
