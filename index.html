@@ -15,7 +15,7 @@
   <title>Les petits plats</title>
 </head>
 
-<body>
+<body class="mb-48">
   <header class="flex flex-col items-center justify-center w-full">
     <div class="flex absolute top-12 left-16 gap-1">
       <img src="./src/assets/svg/logo-text.svg" alt="text">
@@ -31,7 +31,10 @@
       <div class="relative m-auto">
         <input class="w-full py-6 pl-9 rounded-xl" placeholder="Recherchez une recette, un ingrédient...">
 
-        <img src="./src/assets/svg/search-icon.svg" class="absolute right-2.5 bottom-2.5 bg-black rounded-xl p-3">
+        <div class="absolute flex right-2.5 bottom-2.5">
+          <img src="./src/assets/svg/xmark.svg" class="mr-6">
+          <img src="./src/assets/svg/search-icon.svg" class="bg-black rounded-xl p-3">
+        </div>
       </div>
     </div>
   </header>
@@ -39,18 +42,44 @@
     <!-- MultiSelects -->
     <div class="flex justify-between items-center mt-4">
       <div class="flex gap-16">
-        <button class="flex items-center p-4 bg-white rounded-xl">
-          <p class="pr-16">Ingrédients</p>
-          <span class="fa-solid fa-chevron-down"></span>
-        </button>
-        <button class="flex items-center p-4 bg-white rounded-xl">
-          <p class="pr-16">Appareils</p>
-          <span class="fa-solid fa-chevron-down"></span>
-        </button>
-        <button class="flex items-center p-4 bg-white rounded-xl">
-          <p class="pr-16">Ustensiles</p>
-          <span class="fa-solid fa-chevron-down"></span>
-        </button>
+        <div class="relative flex flex-col items-center bg-white rounded-xl">
+          <div role="button" class="flex w-full justify-between items-center px-4 mt-4">
+            <p class="pr-20">Ingrédients</p>
+            <span class="fa-solid fa-chevron-down"></span>
+          </div>
+          <div role="listbox" class="relative inset-x-0 bottom-0 hidden">
+            <div class="relative text-gray-300 m-4 mt-3.5">
+              <input class="p-2 pr-2.5 outline outline-offset-2 rounded-sm">
+
+              <div class="absolute flex right-2.5 bottom-2.5">
+                <img src="./src/assets/svg/small-xmark.svg" class="mr-1">
+                <img src="./src/assets/svg/small-search-icon.svg">
+              </div>
+            </div>
+            <ul>
+              <li class="py-2.5 p-4 hover:bg-yellow-400">Crème de coco</li>
+              <li class="py-2.5 p-4 hover:bg-yellow-400">Jus de citron</li>
+              <li class="py-2.5 p-4 hover:bg-yellow-400">Glaçons</li>
+              <li aria-selected="true"
+                class="py-2.5 p-4 hover:bg-yellow-400 aria-selected:bg-yellow-400 aria-selected:font-bold">
+                Tomates</li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <button class="flex items-center p-4 bg-white rounded-xl">
+            <p class="pr-16">Appareils</p>
+            <span class="fa-solid fa-chevron-down"></span>
+          </button>
+        </div>
+
+        <div>
+          <button class="flex items-center p-4 bg-white rounded-xl">
+            <p class="pr-16">Ustensiles</p>
+            <span class="fa-solid fa-chevron-down"></span>
+          </button>
+        </div>
       </div>
 
       <div class="count-recipes text-xl">
