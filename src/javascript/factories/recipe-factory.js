@@ -1,9 +1,10 @@
 const recipeFactory = (recipe) => {
+  const recipeItemElt = document.createElement('div');
+  const srcImg = `./src/assets/images/recipes/${recipe.image}`;
+  const displayTime = recipe.time;
+
   const getRecipeCard = () => {
-    const recipeItemElt = document.createElement('div');
     recipeItemElt.className = 'rounded-3xl shadow-recipe';
-    const srcImg = `./src/assets/images/recipes/${recipe.image}`;
-    const displayTime = recipe.time;
 
     recipeItemElt.innerHTML = `
       <div class="relative rounded-t-3xl overflow-hidden">
