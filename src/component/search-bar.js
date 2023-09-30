@@ -1,0 +1,27 @@
+import generateRecipesList from '../javascript/utils/recipes.js';
+
+const filterList = (event) => {
+  const filter = event.target.value.toLowerCase();
+  const listToFilter = event.target.listToFilter;
+  let filteredList = [];
+
+  if (filter.length >= 3) {
+    filteredList = listToFilter.filter((elt) =>
+      filterByNameDescIngredient(elt, filter)
+    );
+  } else {
+    filteredList = listToFilter;
+  }
+
+  generateRecipesList(filteredList);
+};
+
+const filterByNameDescIngredient = (elt, filter) => {
+  return (
+    elt.name.toLowerCase().includes(filter) ||
+    elt.description.toLowerCase().includes(filter) ||
+    elt.ingredients.some((el) => el.ingredient.toLowerCase().includes(filter))
+  );
+};
+
+export default filterList;

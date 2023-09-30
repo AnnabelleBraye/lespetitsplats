@@ -1,17 +1,15 @@
 import recipesList from '../data/recipe.js';
-import recipeFactory from './factories/recipe-factory.js';
+import filterList from '../component/search-bar.js';
+import generateRecipesList from './utils/recipes.js';
 
 const init = async () => {
-  const recipesListElt = document.getElementById('recipes-list');
   const recipes = recipesList;
 
-  document.addEventListener('DOMContentLoaded', function () {
-    recipes.forEach((recipe) => {
-      const recipeTemplate = recipeFactory(recipe);
-      const recipeElt = recipeTemplate.getRecipeCard();
-      recipesListElt.appendChild(recipeElt);
-    });
-  });
+  const searchBarElt = document.getElementById('search-bar');
+  searchBarElt.listToFilter = recipes;
+  searchBarElt.addEventListener('input', filterList);
+
+  document.addEventListener('DOMContentLoaded', generateRecipesList(recipes));
 };
 
 init();
