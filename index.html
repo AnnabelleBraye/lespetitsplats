@@ -44,43 +44,65 @@
     <!-- MultiSelects -->
     <div class="flex justify-between items-center mt-4">
       <div class="flex gap-16">
-        <div class="relative flex flex-col items-center bg-white rounded-xl">
-          <div role="button" class="flex w-full justify-between items-center px-4 mt-4">
+
+        <div id="ingredients-select"
+          class="relative flex flex-col items-center h-fit bg-white rounded-x-xl rounded-t-xl rounded-b-xl">
+          <div role="button" class="flex w-full justify-between items-center px-4 my-4">
             <p class="pr-20">Ingrédients</p>
             <span class="fa-solid fa-chevron-down"></span>
           </div>
-          <div role="listbox" class="relative inset-x-0 bottom-0 hidden">
+          <div role="listbox" class="absolute inset-x-0 top-12 bg-white z-10 rounded-b-xl h-60 overflow-auto hidden">
             <div class="relative text-gray-300 m-4 mt-3.5">
-              <input class="p-2 pr-2.5 outline outline-offset-2 rounded-sm">
+              <input class="w-full p-2 pr-2.5 outline outline-offset-2 rounded-sm">
 
               <div class="absolute flex right-2.5 bottom-2.5">
                 <img src="./src/assets/svg/small-xmark.svg" class="mr-1">
                 <img src="./src/assets/svg/small-search-icon.svg">
               </div>
             </div>
-            <ul>
-              <li class="py-2.5 p-4 hover:bg-yellow-400">Crème de coco</li>
-              <li class="py-2.5 p-4 hover:bg-yellow-400">Jus de citron</li>
-              <li class="py-2.5 p-4 hover:bg-yellow-400">Glaçons</li>
-              <li aria-selected="true"
-                class="py-2.5 p-4 hover:bg-yellow-400 aria-selected:bg-yellow-400 aria-selected:font-bold">
-                Tomates</li>
+            <ul class="ronded-b-xl hidden">
             </ul>
           </div>
         </div>
 
-        <div>
-          <button class="flex items-center p-4 bg-white rounded-xl">
-            <p class="pr-16">Appareils</p>
+        <div id="appliances-select"
+          class="relative flex flex-col items-center h-fit bg-white rounded-x-xl rounded-t-xl rounded-b-xl">
+          <div role="button" class="flex w-full justify-between items-center px-4 my-4">
+            <p class="pr-20">Appareils</p>
             <span class="fa-solid fa-chevron-down"></span>
-          </button>
+          </div>
+          <div role="listbox" class="absolute inset-x-0 top-12 bg-white z-10 ronded-b-xl h-60 overflow-auto hidden">
+            <div class="relative text-gray-300 m-4 mt-3.5">
+              <input class="w-full p-2 pr-2.5 outline outline-offset-2 rounded-sm">
+
+              <div class="absolute flex right-2.5 bottom-2.5">
+                <img src="./src/assets/svg/small-xmark.svg" class="mr-1">
+                <img src="./src/assets/svg/small-search-icon.svg">
+              </div>
+            </div>
+            <ul class="ronded-b-xl hidden">
+            </ul>
+          </div>
         </div>
 
-        <div>
-          <button class="flex items-center p-4 bg-white rounded-xl">
-            <p class="pr-16">Ustensiles</p>
+        <div id="ustensils-select"
+          class="relative flex flex-col items-center h-fit bg-white rounded-x-xl rounded-t-xl rounded-b-xl">
+          <div role="button" class="flex w-full justify-between items-center px-4 my-4">
+            <p class="pr-20">Ustensiles</p>
             <span class="fa-solid fa-chevron-down"></span>
-          </button>
+          </div>
+          <div role="listbox" class="absolute inset-x-0 top-12 bg-white z-10 ronded-b-xl h-60 overflow-auto hidden">
+            <div class="relative text-gray-300 m-4 mt-3.5">
+              <input class="w-full p-2 pr-2.5 outline outline-offset-2 rounded-sm">
+
+              <div class="absolute flex right-2.5 bottom-2.5">
+                <img src="./src/assets/svg/small-xmark.svg" class="mr-1">
+                <img src="./src/assets/svg/small-search-icon.svg">
+              </div>
+            </div>
+            <ul class="ronded-b-xl hidden">
+            </ul>
+          </div>
         </div>
       </div>
 
