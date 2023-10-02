@@ -1,6 +1,6 @@
 import recipesList from '../data/recipe.js';
 import filterList from '../component/search-bar.js';
-import generateRecipesList from './utils/recipes.js';
+import recipesUtils from './utils/recipes.js';
 
 const init = async () => {
   const recipes = recipesList;
@@ -9,7 +9,10 @@ const init = async () => {
   searchBarElt.listToFilter = recipes;
   searchBarElt.addEventListener('input', filterList);
 
-  document.addEventListener('DOMContentLoaded', generateRecipesList(recipes));
+  document.addEventListener(
+    'DOMContentLoaded',
+    recipesUtils.updateDynamicContent(recipes)
+  );
 };
 
 init();

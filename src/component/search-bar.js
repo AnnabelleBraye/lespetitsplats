@@ -1,4 +1,4 @@
-import generateRecipesList from '../javascript/utils/recipes.js';
+import recipesUtils from '../javascript/utils/recipes.js';
 
 const filterList = (event) => {
   const filter = event.target.value.toLowerCase();
@@ -13,7 +13,7 @@ const filterList = (event) => {
     filteredList = listToFilter;
   }
 
-  generateRecipesList(filteredList);
+  recipesUtils.updateDynamicContent(filteredList);
 };
 
 const filterByNameDescIngredient = (elt, filter) => {
