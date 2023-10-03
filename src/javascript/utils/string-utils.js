@@ -1,6 +1,6 @@
 const formatSelectName = (str) => {
-  const ingredient = str.trim().toLowerCase();
-  return ingredient[0].toUpperCase() + ingredient.slice(1);
+  const name = str.trim().toLowerCase();
+  return name[0].toUpperCase() + name.slice(1);
 };
 
 const trimAndLowerCase = (str) => {

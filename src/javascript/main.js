@@ -15,11 +15,12 @@ const initMultiselects = () => {
 };
 
 const init = async () => {
-  const recipes = storageUtils.getStorageData('recipes', recipesList);
-  localStorage.setItem('recipes', JSON.stringify(recipes));
-
   const searchBarElt = document.getElementById('search-bar');
   searchBarElt.addEventListener('input', filterList);
+
+  let recipes = storageUtils.getStorageData('recipes', recipesList);
+  localStorage.setItem('recipes', JSON.stringify(recipes));
+  recipes = storageUtils.getStorageData('recipes-filtered', recipes);
 
   initMultiselects();
 

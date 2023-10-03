@@ -1,15 +1,17 @@
 import recipes from '../javascript/utils/recipes.js';
-import storageUtils from '../javascript/utils/storage-utils.js';
 
 const openList = (e) => {
   const select = e.currentTarget;
+  const selectId = select.id;
 
-  const storedRecipes = storageUtils.getStorageData('recipes', []);
-  const tagsList = storageUtils.getStorageData('tags', []);
-  console.log(`ici, storedRecipes`, storedRecipes);
-  recipes.generateSelectsLists(storedRecipes, tagsList);
+  // const storedRecipes = storageUtils.getStorageData('recipes', []);
+  // const selectTagsList = storageUtils.getStorageData(`${selectId}-tags`, []);
+  // recipes.generateSelectsLists(storedRecipes, selectTagsList);
 
   const listbox = select.querySelector('[role="listbox"]');
+  if (listbox.classList.contains('hidden')) {
+    recipes.generateSelectList(selectId);
+  }
 
   const ul = listbox.querySelector('ul');
   select.classList.toggle('rounded-b-xl');
