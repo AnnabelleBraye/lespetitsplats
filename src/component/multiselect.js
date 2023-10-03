@@ -1,17 +1,15 @@
+import recipes from '../javascript/utils/recipes.js';
+import storageUtils from '../javascript/utils/storage-utils.js';
+
 const openList = (e) => {
-  // e.stopPropagation();
   const select = e.currentTarget;
 
-  const listbox = select.querySelector('[role="listbox"]');
+  const storedRecipes = storageUtils.getStorageData('recipes', []);
+  const tagsList = storageUtils.getStorageData('tags', []);
+  console.log(`ici, storedRecipes`, storedRecipes);
+  recipes.generateSelectsLists(storedRecipes, tagsList);
 
-  const inputElt = listbox.querySelector('input');
-  inputElt.addEventListener(
-    'click',
-    (event) => {
-      event.stopPropagation();
-    },
-    false
-  );
+  const listbox = select.querySelector('[role="listbox"]');
 
   const ul = listbox.querySelector('ul');
   select.classList.toggle('rounded-b-xl');

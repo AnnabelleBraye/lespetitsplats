@@ -2,7 +2,7 @@ import recipesUtils from '../javascript/utils/recipes.js';
 
 const filterList = (event) => {
   const filter = event.target.value.toLowerCase();
-  const listToFilter = event.target.listToFilter;
+  const listToFilter = JSON.parse(localStorage.getItem('recipes'));
   let filteredList = [];
 
   if (filter.length >= 3) {

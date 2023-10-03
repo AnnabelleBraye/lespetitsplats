@@ -2,8 +2,10 @@
 module.exports = {
   content: [
     './*.{html,js}',
+    './src/component/*.{html,js}',
     './src/javascript/*.{html,js}',
     './src/javascript/factories/*.{html,js}',
+    './src/javascript/utils/*.{html,js}',
   ],
   presets: [],
   darkMode: 'media', // or 'class'
