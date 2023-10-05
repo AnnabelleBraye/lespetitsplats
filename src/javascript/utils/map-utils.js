@@ -1,5 +1,11 @@
 import stringUtils from './string-utils.js';
 
+/**
+ * Transform a map in array to filter her with a string 'filter'
+ * @param {*} map
+ * @param {*} filter
+ * @returns map
+ */
 const filterMap = (map, filter) => {
   const filteredList = [...map].filter((elt) =>
     stringUtils.trimAndLowerCase(elt[0]).includes(filter)

@@ -1,8 +1,18 @@
+/**
+ * Format string, put first letter on caps
+ * @param {*} str
+ * @returns
+ */
 const formatSelectName = (str) => {
-  const ingredient = str.trim().toLowerCase();
-  return ingredient[0].toUpperCase() + ingredient.slice(1);
+  const name = str.trim().toLowerCase();
+  return name[0].toUpperCase() + name.slice(1);
 };
 
+/**
+ * Trim a string and put it in lower case
+ * @param {*} str
+ * @returns
+ */
 const trimAndLowerCase = (str) => {
   return str.trim().toLowerCase();
 };
