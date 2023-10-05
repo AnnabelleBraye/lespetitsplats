@@ -1,16 +1,35 @@
 import recipeFactory from '../factories/recipe-factory.js';
 import stringUtils from './string-utils.js';
 import storageUtils from './storage-utils.js';
-import mapUtils from './map-utils.js';
+import multiselect from '../../component/multiselect.js';
+import searchBar from '../../component/search-bar.js';
 
 const recipesListElt = document.getElementById('recipes-list');
 
-const updateDynamicContent = (recipes) => {
-  generateRecipesList(recipes);
-  updateRecipesCount(recipes.length);
+/**
+ * Update recipes list, recipes counter and multiselects lists
+ * @param {*} recipes
+ */
+const updateDynamicContent = () => {
+  generateRecipesList();
+  updateRecipesCount();
+
+  const multiselects = document.querySelectorAll(
+    '#ingredients-select, #appliances-select, #ustensils-select'
+  );
+  multiselects.forEach((select) => {
+    multiselect.generateSelectList(select.id);
+  });
 };
 
-const generateRecipesList = (recipes) => {
+/**
+ * Generate recipes list depending on recipes-filtered or recipes
+ */
+const generateRecipesList = () => {
+  const recipes = storageUtils.getDataStorage(
+    'recipes-filtered',
+    storageUtils.getDataStorage('recipes', [])
+  );
   recipesListElt.innerHTML = '';
   recipes.forEach((recipe) => {
     const recipeTemplate = recipeFactory(recipe);
@@ -19,126 +38,158 @@ const generateRecipesList = (recipes) => {
   });
 };
 
-const generateSelectList = (selectId) => {
-  const storedRecipes = storageUtils.getStorageData('recipes', []);
-  const selectTagsList = storageUtils.getStorageData(`${selectId}-tags`, []);
-
-  const list = storedRecipes.reduce((prev, curr) => {
-    switch (selectId) {
-      case 'ingredients-select':
-        curr.ingredients.forEach((elt) => {
-          const ingredient = stringUtils.formatSelectName(elt.ingredient);
-          if (!prev.has(ingredient)) {
-            prev.set(ingredient, selectTagsList.includes(ingredient));
-          }
-        });
-        break;
-      case 'appliances-select':
-        const appliance = stringUtils.formatSelectName(curr.appliance);
-        if (!prev.has(appliance)) {
-          prev.set(appliance, selectTagsList.includes(appliance));
-        }
-        break;
-      case 'ustensils-select':
-        curr.ustensils.forEach((elt) => {
-          const ustensil = stringUtils.formatSelectName(elt);
-          if (!prev.has(ustensil)) {
-            prev.set(ustensil, selectTagsList.includes(ustensil));
-          }
-        });
-        break;
-    }
-
-    return prev;
-  }, new Map());
-
-  const selectElt = document.getElementById(selectId);
-  localStorage.setItem(`${selectId}-list`, JSON.stringify([...list]));
-  createListboxElts(selectElt, list);
-};
-
-const updateRecipesCount = (count) => {
+/**
+ * Update the counter of recipes
+ */
+const updateRecipesCount = () => {
+  const recipes = storageUtils.getDataStorage(
+    'recipes-filtered',
+    storageUtils.getDataStorage('recipes', [])
+  );
   const countRecipesElt = document.getElementById('count-recipes');
-  countRecipesElt.innerText = `${count} ${count >= 1 ? 'recettes' : 'recette'}`;
+  countRecipesElt.innerText = `${recipes.length} ${
+    recipes.length > 1 ? 'recettes' : 'recette'
+  }`;
 };
 
-const createListboxElts = (selectElt, list) => {
-  const inputElt = selectElt.querySelector('input');
-  const clearInputElt = selectElt.querySelector('div > img');
-  clearInputElt.inputElt = inputElt;
-  clearInputElt.parentListbox = selectElt;
-  clearInputElt.addEventListener('click', clearInputValue, false);
+const getRecipesFilteredBySearchAndAllTags = (tags, isAddingTag) => {
+  let recipes = storageUtils.getDataStorage('recipes', []);
+  const ingredientsList = [];
+  const appliancesList = [];
+  const ustensilsList = [];
+  for (let [key, value] of tags.entries()) {
+    if (value === 'ingredients-select') {
+      ingredientsList.push(key);
+    } else if (value === 'appliances-select') {
+      appliancesList.push(key);
+    } else if (value === 'ustensils-select') {
+      ustensilsList.push(key);
+    }
+  }
 
-  inputElt.value = '';
-  inputElt.addEventListener('click', stopPropagation, false);
-  inputElt.addEventListener('input', filterAndUpdate);
+  // Get recipes in storage, or recipes filtered by seach-filter and tags
+  if (isAddingTag) {
+    recipes = storageUtils.getDataStorage('recipes-filtered', recipes);
+  }
+  // else {
+  const filter = storageUtils.getDataStorage('search-filter', '');
+  if (filter) {
+    recipes = recipes.filter((recipe) =>
+      searchBar.filterByNameDescIngredient(recipe, filter)
+    );
+  }
 
-  updateSelectList(selectElt, list);
+  // Check if a recipes contains every selected tags
+  const list1 = filterRecipesByIngredients(recipes, ingredientsList);
+  const list2 = filterRecipesByAppliances(recipes, appliancesList);
+  const list3 = filterRecipesByUstensils(recipes, ustensilsList);
+  const filteredRecipes = [];
+
+  for (const recipe of recipes) {
+    if (
+      list1.includes(recipe) &&
+      list2.includes(recipe) &&
+      list3.includes(recipe)
+    ) {
+      filteredRecipes.push(recipe);
+    }
+  }
+
+  return filteredRecipes;
 };
 
-const clearInputValue = (e) => {
-  e.stopPropagation();
+/**
+ * Filter recipesList by ingredient tags
+ * @param {*} recipesList
+ * @param {*} tagsList
+ * @returns
+ */
+const filterRecipesByIngredients = (recipesList, tagsList) => {
+  const newList = [];
 
-  e.target.inputElt.value = '';
-  updateSelectList(e.target.parentListbox, e.target.inputElt.selectList);
+  for (const recipe of recipesList) {
+    let isAllTagsPresent = true;
+
+    tagsList.forEach((tag) => {
+      if (
+        !recipe.ingredients
+          .map((elt) => stringUtils.formatSelectName(elt.ingredient))
+          .includes(tag)
+      ) {
+        isAllTagsPresent = false;
+        return false;
+      }
+    });
+
+    if (isAllTagsPresent) {
+      newList.push(recipe);
+    }
+  }
+
+  return newList;
 };
 
-const filterAndUpdate = (e) => {
-  const filter = stringUtils.trimAndLowerCase(e.target.value);
+/**
+ * Filter recipesList by appliances tags
+ * @param {*} recipesList
+ * @param {*} tagsList
+ * @returns
+ */
+const filterRecipesByAppliances = (recipesList, tagsList) => {
+  const newList = [];
 
-  const selectElt = e.target.parentElement.parentElement.parentElement;
-  const selectList = new Map(
-    storageUtils.getStorageData(`${selectElt.id}-list`, [])
-  );
-  const filteredMap = mapUtils.filterMap(selectList, filter);
-  updateSelectList(selectElt, filteredMap);
+  for (const recipe of recipesList) {
+    let isAllTagsPresent = true;
+
+    tagsList.forEach((tag) => {
+      if (recipe.appliance !== tag) {
+        isAllTagsPresent = false;
+        return false;
+      }
+    });
+
+    if (isAllTagsPresent) {
+      newList.push(recipe);
+    }
+  }
+
+  return newList;
 };
 
-const updateSelectList = (selectElt, list) => {
-  const ulElt = selectElt.querySelector('ul');
-  ulElt.innerHTML = '';
-  list.forEach((value, key) => {
-    let classes =
-      'flex justify-between py-2.5 p-4 hover:bg-yellow-400 aria-selected:bg-yellow-400 aria-selected:font-bold';
+/**
+ * Filter recipesList by ustensils tags
+ * @param {*} recipesList
+ * @param {*} tagsList
+ * @returns
+ */
+const filterRecipesByUstensils = (recipesList, tagsList) => {
+  const newList = [];
 
-    const liElt = document.createElement('li');
-    liElt.setAttribute('aria-selected', value);
-    liElt.textTag = key;
-    liElt.selectListId = selectElt.id;
-    liElt.addEventListener('click', selectListItem);
-    liElt.className = classes;
-    const imgClass = !value ? 'invisible' : '';
-    liElt.innerHTML = `
-    ${key}
-    <img class="${imgClass}" src="./src/assets/svg/xmark-rounded.svg">
-    `;
-    ulElt.appendChild(liElt);
-  });
-};
+  for (const recipe of recipesList) {
+    let isAllTagsPresent = true;
 
-const selectListItem = (e) => {
-  e.stopPropagation();
-  const liElt = e.target;
-  const selectListId = liElt.selectListId;
+    tagsList.forEach((tag) => {
+      if (
+        !recipe.ustensils
+          .map((elt) => stringUtils.formatSelectName(elt))
+          .includes(tag)
+      ) {
+        isAllTagsPresent = false;
+        return false;
+      }
+    });
 
-  liElt.setAttribute(
-    'aria-selected',
-    liElt.getAttribute('aria-selected') === 'false' ? 'true' : 'false'
-  );
+    if (isAllTagsPresent) {
+      newList.push(recipe);
+    }
+  }
 
-  const imgElt = liElt.querySelector('img');
-  imgElt.classList.toggle('invisible');
-  storageUtils.updateSelectedSelectItem(selectListId, liElt.textTag);
-  storageUtils.updateTagsStorage(selectListId, liElt);
-};
-
-const stopPropagation = (e) => {
-  e.stopPropagation();
+  return newList;
 };
 
 export default {
   updateDynamicContent,
   generateRecipesList,
   updateRecipesCount,
-  generateSelectList,
+  getRecipesFilteredBySearchAndAllTags,
 };

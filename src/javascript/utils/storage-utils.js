@@ -1,187 +1,67 @@
 import stringUtils from './string-utils.js';
 import recipesUtils from './recipes.js';
+import tagFunctions from '../../component/tag.js';
 
+/**
+ * Add or remove a tag from tags list in storage
+ * @param {*} selectListId
+ * @param {*} liElt
+ */
 const updateTagsStorage = (selectListId, liElt) => {
-  const tags = localStorage.getItem(`${selectListId}-tags`)
-    ? JSON.parse(localStorage.getItem(`${selectListId}-tags`))
-    : [];
-  let isAddingTag = true;
+  let tags = new Map(getDataStorage(`select-tags`, []));
 
   const name = stringUtils.formatSelectName(liElt.textTag);
   if (liElt.getAttribute('aria-selected') === 'true') {
-    tags.push(name);
+    tags = tagFunctions.addTag(name, selectListId);
   } else {
-    isAddingTag = false;
-    tags.splice(
-      tags.findIndex((tag) => tag === name),
-      1
-    );
+    tags = tagFunctions.removeTag(name);
   }
-
-  localStorage.setItem(`${selectListId}-tags`, JSON.stringify(tags));
-  updateRecipesStorage(selectListId, tags, isAddingTag);
 };
 
+/**
+ * Update recipes-filtered in storage when adding or removing a tag
+ * Check for search-filter or tags to filter recipes
+ * Then update dynamic content
+ * @param {*} selectListId
+ * @param {*} tags
+ * @param {*} isAddingTag
+ */
 const updateRecipesStorage = (selectListId, tags, isAddingTag) => {
-  let recipes = getStorageData('recipes', []);
-  if (isAddingTag) {
-    recipes = getStorageData('recipes-filtered', recipes);
-  } else {
-    const list1 = filterRecipesByIngredients(
-      recipes,
-      getStorageData('ingredients-select-tags', [])
-    );
-    const list2 = filterRecipesByAppliances(
-      recipes,
-      getStorageData('appliances-select-tags', [])
-    );
-    const list3 = filterRecipesByUstensils(
-      recipes,
-      getStorageData('ustensils-select-tags', [])
-    );
-    const filteredRecipes = [];
+  const recipes = recipesUtils.getRecipesFilteredBySearchAndAllTags(
+    tags,
+    isAddingTag
+  );
 
-    for (const recipe of recipes) {
-      if (
-        list1.includes(recipe) &&
-        list2.includes(recipe) &&
-        list3.includes(recipe)
-      ) {
-        filteredRecipes.push(recipe);
-      }
-    }
-    recipes = filteredRecipes;
-  }
-  const list = [];
-
-  // Check if recipe contains every selected tags
-  for (const recipe of recipes) {
-    let isAllTagsPresent = true;
-    switch (selectListId) {
-      case 'ingredients-select':
-        tags.forEach((tag) => {
-          if (
-            !recipe.ingredients
-              .map((elt) => stringUtils.formatSelectName(elt.ingredient))
-              .includes(tag)
-          ) {
-            isAllTagsPresent = false;
-            return false;
-          }
-        });
-        break;
-      case 'appliances-select':
-        tags.forEach((tag) => {
-          if (recipe.appliance !== tag) {
-            isAllTagsPresent = false;
-            return false;
-          }
-        });
-        break;
-      case 'ustensils-select':
-        tags.forEach((tag) => {
-          if (
-            !recipe.ustensils
-              .map((elt) => stringUtils.formatSelectName(elt))
-              .includes(tag)
-          ) {
-            isAllTagsPresent = false;
-            return false;
-          }
-        });
-        break;
-    }
-
-    if (isAllTagsPresent) {
-      list.push(recipe);
-    }
-  }
-
-  localStorage.setItem('recipes-filtered', JSON.stringify(list));
-  recipesUtils.updateDynamicContent(list);
+  localStorage.setItem('recipes-filtered', JSON.stringify(recipes));
+  recipesUtils.updateDynamicContent();
 };
 
-const getStorageData = (name, value) => {
+/**
+ * Get Item 'name' or value if item is undefined
+ * @param {*} name
+ * @param {*} value
+ * @returns
+ */
+const getDataStorage = (name, value) => {
   return localStorage.getItem(name)
     ? JSON.parse(localStorage.getItem(name))
     : value;
 };
 
-const filterRecipesByIngredients = (recipesList, tagsList) => {
-  const newList = [];
-
-  for (const recipe of recipesList) {
-    let isAllTagsPresent = true;
-
-    tagsList.forEach((tag) => {
-      if (
-        !recipe.ingredients
-          .map((elt) => stringUtils.formatSelectName(elt.ingredient))
-          .includes(tag)
-      ) {
-        isAllTagsPresent = false;
-        return false;
-      }
-    });
-
-    if (isAllTagsPresent) {
-      newList.push(recipe);
-    }
-  }
-
-  return newList;
-};
-
-const filterRecipesByAppliances = (recipesList, tagsList) => {
-  const newList = [];
-
-  for (const recipe of recipesList) {
-    let isAllTagsPresent = true;
-
-    tagsList.forEach((tag) => {
-      if (recipe.appliance !== tag) {
-        isAllTagsPresent = false;
-        return false;
-      }
-    });
-
-    if (isAllTagsPresent) {
-      newList.push(recipe);
-    }
-  }
-
-  return newList;
-};
-
-const filterRecipesByUstensils = (recipesList, tagsList) => {
-  const newList = [];
-
-  for (const recipe of recipesList) {
-    let isAllTagsPresent = true;
-
-    tagsList.forEach((tag) => {
-      if (
-        !recipe.ustensils
-          .map((elt) => stringUtils.formatSelectName(elt))
-          .includes(tag)
-      ) {
-        isAllTagsPresent = false;
-        return false;
-      }
-    });
-
-    if (isAllTagsPresent) {
-      newList.push(recipe);
-    }
-  }
-
-  return newList;
-};
-
-const updateSelectedSelectItem = (selectListId, textTag) => {
-  const selectList = new Map(getStorageData(`${selectListId}-list`, []));
+/**
+ * Update the value of isSelected tag in select list
+ * @param {*} selectListId
+ * @param {*} textTag
+ */
+const updateSelectedSelectItemStorage = (selectListId, textTag) => {
+  const selectList = new Map(getDataStorage(`${selectListId}-list`, []));
   selectList.set(textTag, selectList.get(textTag) === true ? false : true);
   localStorage.setItem(`${selectListId}-list`, JSON.stringify([...selectList]));
 };
 
-export default { updateTagsStorage, getStorageData, updateSelectedSelectItem };
+export default {
+  updateTagsStorage,
+  getDataStorage,
+  updateSelectedSelectItemStorage,
+  updateRecipesStorage,
+};

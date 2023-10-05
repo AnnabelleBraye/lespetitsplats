@@ -1,7 +1,13 @@
 import recipesUtils from '../javascript/utils/recipes.js';
+import storageUtils from '../javascript/utils/storage-utils.js';
 
-const filterList = (event) => {
-  const filter = event.target.value.toLowerCase();
+const searchBarElt = document.getElementById('search-bar');
+
+/**
+ * Starts filter at 3 caracters and update recipes-filtered list and search-filter in storage
+ * Then finally update dynamic content
+ */
+const filterList = (filter) => {
   const listToFilter = JSON.parse(localStorage.getItem('recipes'));
   let filteredList = [];
 
@@ -13,9 +19,27 @@ const filterList = (event) => {
     filteredList = listToFilter;
   }
 
-  recipesUtils.updateDynamicContent(filteredList);
+  localStorage.setItem('recipes-filtered', JSON.stringify(filteredList));
+  localStorage.setItem('search-filter', JSON.stringify(filter));
+  recipesUtils.updateDynamicContent();
 };
 
+/**
+ * Event on enter letter on search bar
+ * @param {*} e
+ */
+const filterListEvent = (e) => {
+  const filter = e.target.value.toLowerCase();
+
+  filterList(filter);
+};
+
+/**
+ * Filter list element with the filter in input by name, description and ingredient
+ * @param {*} elt
+ * @param {*} filter
+ * @returns
+ */
 const filterByNameDescIngredient = (elt, filter) => {
   return (
     elt.name.toLowerCase().includes(filter) ||
@@ -24,4 +48,4 @@ const filterByNameDescIngredient = (elt, filter) => {
   );
 };
 
-export default filterList;
+export default { filterList, filterListEvent, filterByNameDescIngredient };
