@@ -1,27 +1,42 @@
 import recipesUtils from '../javascript/utils/recipes.js';
 import storageUtils from '../javascript/utils/storage-utils.js';
 
-const searchBarElt = document.getElementById('search-bar');
-
 /**
  * Starts filter at 3 caracters and update recipes-filtered list and search-filter in storage
  * Then finally update dynamic content
  */
 const filterList = (filter) => {
-  const listToFilter = JSON.parse(localStorage.getItem('recipes'));
+  const recipes = storageUtils.getDataStorage('recipes', []);
+  let listToFilter = storageUtils.getDataStorage('recipes-filtered', recipes);
+  const oldFilter = storageUtils.getDataStorage('search-filter', '');
   let filteredList = [];
 
-  if (filter.length >= 3) {
-    filteredList = listToFilter.filter((elt) =>
-      filterByNameDescIngredient(elt, filter)
-    );
-  } else {
-    filteredList = listToFilter;
-  }
+  const tagsList = new Map(storageUtils.getDataStorage('select-tags', []));
+  if (filter) {
+    if (filter.length >= 3) {
+      if (oldFilter.length < filter.length) {
+        filteredList = listToFilter.filter((elt) =>
+          filterByNameDescIngredient(elt, filter)
+        );
+      } else {
+        filteredList = recipesUtils.filterRecipesByAllTags(recipes, tagsList);
 
-  localStorage.setItem('recipes-filtered', JSON.stringify(filteredList));
-  localStorage.setItem('search-filter', JSON.stringify(filter));
-  recipesUtils.updateDynamicContent();
+        filteredList = filteredList.filter((elt) =>
+          filterByNameDescIngredient(elt, filter)
+        );
+      }
+    } else if (oldFilter.length < 3 && oldFilter.length > filter.length) {
+      filteredList = listToFilter;
+    } else {
+      filteredList = recipesUtils.filterRecipesByAllTags(recipes, tagsList);
+    }
+
+    updateContent(filteredList, filter);
+  } else if (oldFilter.length >= 3 && !filter) {
+    filteredList = recipesUtils.filterRecipesByAllTags(recipes, tagsList);
+
+    updateContent(filteredList, filter);
+  }
 };
 
 /**
@@ -46,6 +61,17 @@ const filterByNameDescIngredient = (elt, filter) => {
     elt.description.toLowerCase().includes(filter) ||
     elt.ingredients.some((el) => el.ingredient.toLowerCase().includes(filter))
   );
+};
+
+/**
+ * Set recipes-filtered and search-filter in storage then update dynamic content
+ * @param {*} filteredList
+ * @param {*} filter
+ */
+const updateContent = (filteredList, filter) => {
+  localStorage.setItem('recipes-filtered', JSON.stringify(filteredList));
+  localStorage.setItem('search-filter', JSON.stringify(filter));
+  recipesUtils.updateDynamicContent();
 };
 
 export default { filterList, filterListEvent, filterByNameDescIngredient };
