@@ -23,6 +23,15 @@ const initMultiselects = () => {
     '#ingredients-select, #appliances-select, #ustensils-select'
   );
 
+  window.addEventListener('click', () => {
+    const multiselects = document.querySelectorAll(
+      '#ingredients-select, #appliances-select, #ustensils-select'
+    );
+    multiselects.forEach((select) => {
+      multiselect.closeList(select);
+    });
+  });
+
   multiselects.forEach((select) => {
     select.addEventListener('click', multiselect.openList, false);
   });

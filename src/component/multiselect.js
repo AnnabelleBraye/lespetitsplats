@@ -1,5 +1,4 @@
 import mapUtils from '../javascript/utils/map-utils.js';
-import recipes from '../javascript/utils/recipes.js';
 import storageUtils from '../javascript/utils/storage-utils.js';
 import stringUtils from '../javascript/utils/string-utils.js';
 
@@ -8,12 +7,16 @@ import stringUtils from '../javascript/utils/string-utils.js';
  * @param {*} e
  */
 const openList = (e) => {
+  stopPropagation(e);
   const select = e.currentTarget;
+  console.log(`select?`, select);
   const selectId = select.id;
 
   const listbox = select.querySelector('[role="listbox"]');
+
   if (listbox.classList.contains('hidden')) {
     generateSelectList(selectId);
+    closeOthersLists(select.id);
   }
 
   const ul = listbox.querySelector('ul');
@@ -179,8 +182,39 @@ const selectListItem = (e) => {
   storageUtils.updateTagsStorage(selectListId, liElt);
 };
 
+/**
+ * Close all select lists except list in parameters
+ * @param {*} selectId
+ */
+const closeOthersLists = (selectId) => {
+  const othersLists = document.querySelectorAll(
+    `[id*="-select"]:not(#${selectId})`
+  );
+
+  othersLists.forEach((select) => {
+    const listbox = select.querySelector('[role="listbox"]');
+    if (!listbox.classList.contains('hidden')) {
+      closeList(select);
+    }
+  });
+};
+
+/**
+ * Hide select list
+ * @param {*} select
+ */
+const closeList = (select) => {
+  const listbox = select.querySelector('[role="listbox"]');
+  if (!listbox.classList.contains('hidden')) {
+    const ul = listbox.querySelector('ul');
+    select.classList.add('rounded-b-xl');
+    ul.classList.add('hidden');
+    listbox.classList.add('hidden');
+  }
+};
+
 const stopPropagation = (e) => {
   e.stopPropagation();
 };
 
-export default { openList, generateSelectList };
+export default { openList, generateSelectList, closeList };
