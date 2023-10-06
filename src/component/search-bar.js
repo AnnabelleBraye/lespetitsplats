@@ -74,4 +74,15 @@ const updateContent = (filteredList, filter) => {
   recipesUtils.updateDynamicContent();
 };
 
-export default { filterList, filterListEvent, filterByNameDescIngredient };
+const resetFilter = () => {
+  const searchBarElt = document.getElementById('search-bar');
+  searchBarElt.value = '';
+  filterList('');
+};
+
+export default {
+  filterList,
+  filterListEvent,
+  filterByNameDescIngredient,
+  resetFilter,
+};
