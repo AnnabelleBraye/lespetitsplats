@@ -123,6 +123,7 @@ const filterAndUpdate = (e) => {
   const filter = stringUtils.trimAndLowerCase(e.target.value);
 
   const selectElt = e.target.selectElt;
+  // const selectElt = e.target.selectElt;
   const selectList = new Map(
     storageUtils.getDataStorage(`${selectElt.id}-list`, [])
   );
@@ -146,7 +147,7 @@ const updateSelectList = (selectElt, eltsMap) => {
     liElt.setAttribute('aria-selected', value);
     liElt.textTag = key;
     liElt.selectListId = selectElt.id;
-    liElt.addEventListener('click', selectListItem);
+    liElt.addEventListener('click', selectListItem, false);
     liElt.className = classes;
     const imgClass = !value ? 'invisible' : '';
     liElt.innerHTML = `
@@ -165,7 +166,7 @@ const updateSelectList = (selectElt, eltsMap) => {
  */
 const selectListItem = (e) => {
   e.stopPropagation();
-  const liElt = e.target;
+  const liElt = e.currentTarget;
   const selectListId = liElt.selectListId;
 
   liElt.setAttribute(

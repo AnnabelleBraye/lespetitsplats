@@ -9,8 +9,10 @@ const searchBarElt = document.getElementById('search-bar');
 
 const initSearchFilter = () => {
   const filter = storageUtils.getDataStorage('search-filter', '');
-  searchbar.filterList(filter);
   searchBarElt.value = filter;
+  searchbar.filterList(filter);
+  const xmarkInputElt = searchBarElt.parentElement.querySelector('div > img');
+  xmarkInputElt.addEventListener('click', searchbar.resetFilter);
 };
 
 /**
