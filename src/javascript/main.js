@@ -80,8 +80,8 @@ const handleKeydown = (e) => {
   if (key === 'Escape' && e.target.id.includes('-select')) {
     multiselect.closeList(select);
   } else if (key === 'Enter' && e.target.id.includes('-select')) {
-    select.classList.remove('focus:outline');
-    select.classList.remove('focus:outline-1');
+    select.classList.toggle('focus:outline');
+    select.classList.toggle('focus:outline-1');
     multiselect.openList(e);
     select.querySelector('input').focus();
   }
