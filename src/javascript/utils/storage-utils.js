@@ -27,12 +27,8 @@ const updateTagsStorage = (selectListId, liElt) => {
  * @param {*} isAddingTag
  */
 const updateRecipesStorage = (selectListId, tags, isAddingTag) => {
-  const recipes = recipesUtils.getRecipesFilteredBySearchAndAllTags(
-    tags,
-    isAddingTag
-  );
+  recipesUtils.updateRecipesFilteredBySearchAndAllTags(tags, isAddingTag);
 
-  localStorage.setItem('recipes-filtered', JSON.stringify(recipes));
   recipesUtils.updateDynamicContent();
 };
 

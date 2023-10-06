@@ -52,8 +52,14 @@ const updateRecipesCount = () => {
   }`;
 };
 
-const getRecipesFilteredBySearchAndAllTags = (tags, isAddingTag) => {
-  let recipes = storageUtils.getDataStorage('recipes', []);
+/**
+ * Filter recipes list by all tags
+ * @param {*} recipes
+ * @param {*} tags
+ * @returns
+ */
+const filterRecipesByAllTags = (recipes, tags) => {
+  const filteredRecipes = [];
   const ingredientsList = [];
   const appliancesList = [];
   const ustensilsList = [];
@@ -67,23 +73,10 @@ const getRecipesFilteredBySearchAndAllTags = (tags, isAddingTag) => {
     }
   }
 
-  // Get recipes in storage, or recipes filtered by seach-filter and tags
-  if (isAddingTag) {
-    recipes = storageUtils.getDataStorage('recipes-filtered', recipes);
-  }
-  // else {
-  const filter = storageUtils.getDataStorage('search-filter', '');
-  if (filter) {
-    recipes = recipes.filter((recipe) =>
-      searchBar.filterByNameDescIngredient(recipe, filter)
-    );
-  }
-
   // Check if a recipes contains every selected tags
   const list1 = filterRecipesByIngredients(recipes, ingredientsList);
   const list2 = filterRecipesByAppliances(recipes, appliancesList);
   const list3 = filterRecipesByUstensils(recipes, ustensilsList);
-  const filteredRecipes = [];
 
   for (const recipe of recipes) {
     if (
@@ -95,7 +88,32 @@ const getRecipesFilteredBySearchAndAllTags = (tags, isAddingTag) => {
     }
   }
 
+  localStorage.setItem('recipes-filtered', JSON.stringify(filteredRecipes));
   return filteredRecipes;
+};
+
+/**
+ * Get recipes list filtered by searchbar THEN by all tags
+ * @param {*} tags
+ * @param {*} isAddingTag
+ * @returns
+ */
+const updateRecipesFilteredBySearchAndAllTags = (tags, isAddingTag) => {
+  let recipes = storageUtils.getDataStorage('recipes', []);
+
+  // Get recipes in storage, or recipes filtered by seach-filter and tags
+  if (isAddingTag) {
+    recipes = storageUtils.getDataStorage('recipes-filtered', recipes);
+  }
+
+  const filter = storageUtils.getDataStorage('search-filter', '');
+  if (filter && filter.length >= 3) {
+    recipes = recipes.filter((recipe) =>
+      searchBar.filterByNameDescIngredient(recipe, filter)
+    );
+  }
+
+  filterRecipesByAllTags(recipes, tags);
 };
 
 /**
@@ -167,7 +185,6 @@ const filterRecipesByUstensils = (recipesList, tagsList) => {
 
   for (const recipe of recipesList) {
     let isAllTagsPresent = true;
-
     tagsList.forEach((tag) => {
       if (
         !recipe.ustensils
@@ -191,5 +208,6 @@ export default {
   updateDynamicContent,
   generateRecipesList,
   updateRecipesCount,
-  getRecipesFilteredBySearchAndAllTags,
+  filterRecipesByAllTags,
+  updateRecipesFilteredBySearchAndAllTags,
 };
