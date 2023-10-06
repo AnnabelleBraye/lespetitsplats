@@ -9,7 +9,6 @@ import stringUtils from '../javascript/utils/string-utils.js';
 const openList = (e) => {
   stopPropagation(e);
   const select = e.currentTarget;
-  console.log(`select?`, select);
   const selectId = select.id;
 
   const listbox = select.querySelector('[role="listbox"]');
@@ -94,6 +93,7 @@ const createListboxElts = (selectElt, eltsMap) => {
   inputElt.selectElt = selectElt;
   inputElt.addEventListener('click', stopPropagation, false);
   inputElt.addEventListener('input', filterAndUpdate);
+  inputElt.addEventListener('keydown', handleKeyDown);
 
   const clearInputElt = selectElt.querySelector('div > img');
   clearInputElt.inputElt = inputElt;
@@ -126,7 +126,6 @@ const filterAndUpdate = (e) => {
   const filter = stringUtils.trimAndLowerCase(e.target.value);
 
   const selectElt = e.target.selectElt;
-  // const selectElt = e.target.selectElt;
   const selectList = new Map(
     storageUtils.getDataStorage(`${selectElt.id}-list`, [])
   );
@@ -144,13 +143,15 @@ const updateSelectList = (selectElt, eltsMap) => {
   ulElt.innerHTML = '';
   eltsMap.forEach((value, key) => {
     let classes =
-      'flex justify-between py-2.5 p-4 hover:bg-yellow-400 aria-selected:bg-yellow-400 aria-selected:font-bold';
+      'flex justify-between py-2.5 p-4 hover:bg-yellow-400 aria-selected:bg-yellow-400 aria-selected:font-bold focus:outline focus:outline-1';
 
     const liElt = document.createElement('li');
     liElt.setAttribute('aria-selected', value);
+    liElt.tabIndex = 0;
     liElt.textTag = key;
     liElt.selectListId = selectElt.id;
     liElt.addEventListener('click', selectListItem, false);
+    liElt.addEventListener('keydown', handleKeyDown, false);
     liElt.className = classes;
     const imgClass = !value ? 'invisible' : '';
     liElt.innerHTML = `
@@ -215,6 +216,21 @@ const closeList = (select) => {
 
 const stopPropagation = (e) => {
   e.stopPropagation();
+};
+
+const handleKeyDown = (e) => {
+  const selectElt = e.target.parentElement.parentElement.parentElement;
+  const key = e.key;
+
+  if (key === 'Escape') {
+    closeList(selectElt);
+  } else if (e.target.type !== 'text' && key === 'Enter') {
+    selectListItem(e);
+    const liElt = e.target.closest('li');
+    [...selectElt.querySelectorAll(`li`)]
+      .find((elt) => elt.textContent.includes(liElt.innerText))
+      .focus();
+  }
 };
 
 export default { openList, generateSelectList, closeList };

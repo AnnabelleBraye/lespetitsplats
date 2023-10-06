@@ -34,6 +34,8 @@ const initMultiselects = () => {
 
   multiselects.forEach((select) => {
     select.addEventListener('click', multiselect.openList, false);
+    select.addEventListener('keydown', handleKeydown, false);
+    select.tabIndex = 0;
   });
 };
 
@@ -69,6 +71,20 @@ const init = async () => {
     'DOMContentLoaded',
     recipesUtils.updateDynamicContent()
   );
+};
+
+const handleKeydown = (e) => {
+  const key = e.key;
+  const select = e.target;
+
+  if (key === 'Escape' && e.target.id.includes('-select')) {
+    multiselect.closeList(select);
+  } else if (key === 'Enter' && e.target.id.includes('-select')) {
+    select.classList.remove('focus:outline');
+    select.classList.remove('focus:outline-1');
+    multiselect.openList(e);
+    select.querySelector('input').focus();
+  }
 };
 
 init();
