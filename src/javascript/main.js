@@ -12,6 +12,7 @@ const initSearchFilter = () => {
   searchBarElt.value = filter;
   searchbar.filterList(filter);
   const xmarkInputElt = searchBarElt.parentElement.querySelector('div > img');
+  xmarkInputElt.tabIndex = 0;
   xmarkInputElt.addEventListener('click', searchbar.resetFilter);
 };
 
@@ -34,7 +35,6 @@ const initMultiselects = () => {
 
   multiselects.forEach((select) => {
     select.addEventListener('click', multiselect.openList, false);
-    select.addEventListener('keydown', handleKeydown, false);
     select.tabIndex = 0;
   });
 };
@@ -54,6 +54,7 @@ const initTagsList = () => {
  */
 const init = async () => {
   searchBarElt.addEventListener('input', searchbar.filterListEvent);
+  window.addEventListener('keydown', handleKeydown, false);
 
   let recipes = storageUtils.getDataStorage('recipes', recipesList);
   // SetItem for first init
@@ -74,14 +75,14 @@ const init = async () => {
 };
 
 const handleKeydown = (e) => {
+  e.stopPropagation();
   const key = e.key;
-  const select = e.target;
 
   if (key === 'Escape') {
-    if (!select.id.includes('-select')) {
-      select.parentElement.parentElement.parentElement.focus();
+    if (!e.target.id.includes('-select')) {
+      e.target.parentElement.parentElement.parentElement.focus();
     }
-    multiselect.closeList(select);
+    multiselect.closeList(e.target);
   } else if (key === 'Enter' && e.target.id.includes('-select')) {
     multiselect.openList(e);
   }

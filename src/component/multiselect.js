@@ -8,7 +8,8 @@ import stringUtils from '../javascript/utils/string-utils.js';
  */
 const openList = (e) => {
   stopPropagation(e);
-  const select = e.currentTarget;
+  const select = e.currentTarget.id ? e.currentTarget : e.target;
+  select.addEventListener('keydown', handleKeydown);
   const selectId = select.id;
 
   const listbox = select.querySelector('[role="listbox"]');
@@ -94,12 +95,14 @@ const createListboxElts = (selectElt, eltsMap) => {
   inputElt.selectElt = selectElt;
   inputElt.addEventListener('click', stopPropagation, false);
   inputElt.addEventListener('input', filterAndUpdate);
-  inputElt.addEventListener('keydown', handleKeyDown);
+  inputElt.addEventListener('keydown', handleKeydown);
 
   const clearInputElt = selectElt.querySelector('div > img');
+  clearInputElt.tabIndex = 0;
   clearInputElt.inputElt = inputElt;
   clearInputElt.parentListbox = selectElt;
   clearInputElt.addEventListener('click', clearInputValue, false);
+  clearInputElt.addEventListener('keydown', handleKeydown, false);
 
   updateSelectList(selectElt, eltsMap);
 };
@@ -144,7 +147,7 @@ const updateSelectList = (selectElt, eltsMap) => {
   ulElt.innerHTML = '';
   eltsMap.forEach((value, key) => {
     let classes =
-      'flex justify-between py-2.5 p-4 hover:bg-yellow-400 aria-selected:bg-yellow-400 aria-selected:font-bold focus:outline focus:outline-2';
+      'flex justify-between py-2.5 p-4 hover:bg-yellow-400 aria-selected:bg-yellow-400 aria-selected:font-bold focus:outline focus:outline-2 focus:bg-yellow-400';
 
     const liElt = document.createElement('li');
     liElt.setAttribute('aria-selected', value);
@@ -152,13 +155,15 @@ const updateSelectList = (selectElt, eltsMap) => {
     liElt.textTag = key;
     liElt.selectListId = selectElt.id;
     liElt.addEventListener('click', selectListItem, false);
-    liElt.addEventListener('keydown', handleKeyDown, false);
+    liElt.addEventListener('keydown', handleKeydown, false);
     liElt.className = classes;
     const imgClass = !value ? 'invisible' : '';
     liElt.innerHTML = `
     ${key}
     <img class="${imgClass}" src="./src/assets/svg/xmark-rounded.svg">
     `;
+    const imgElt = liElt.querySelector('img');
+    imgElt.tabIndex = 0;
     ulElt.appendChild(liElt);
   });
 };
@@ -207,7 +212,7 @@ const closeOthersLists = (selectId) => {
  */
 const closeList = (select) => {
   const listbox = select.querySelector('[role="listbox"]');
-  if (!listbox.classList.contains('hidden')) {
+  if (listbox && !listbox.classList.contains('hidden')) {
     const ul = listbox.querySelector('ul');
     select.classList.add('rounded-b-xl');
     ul.classList.add('hidden');
@@ -219,18 +224,42 @@ const stopPropagation = (e) => {
   e.stopPropagation();
 };
 
-const handleKeyDown = (e) => {
-  const selectElt = e.target.parentElement.parentElement.parentElement;
+const handleKeydown = (e) => {
+  const selectElt = e.target.closest('[id*="-select"]');
+
   const key = e.key;
+  const firstElement = selectElt;
+  const allChildren = selectElt.querySelectorAll('input, li');
+  const lastElement = allChildren[allChildren.length - 1];
 
   if (key === 'Escape') {
+    e.stopPropagation();
     closeList(selectElt);
-  } else if (e.target.type !== 'text' && key === 'Enter') {
-    selectListItem(e);
-    const liElt = e.target.closest('li');
-    [...selectElt.querySelectorAll(`li`)]
-      .find((elt) => elt.textContent.includes(liElt.innerText))
-      .focus();
+    firstElement.focus();
+  } else if (e.target.type === 'text') {
+    e.stopPropagation();
+  } else if (key === 'Enter' && !e.target.id.includes('-select')) {
+    e.stopPropagation();
+    if (e.target.closest('li')) {
+      selectListItem(e);
+      const liElt = e.target.closest('li');
+      [...selectElt.querySelectorAll(`li`)]
+        .find((elt) => elt.textContent.includes(liElt.innerText))
+        .focus();
+    } else if (e.target.closest('img')) {
+      clearInputValue(e);
+    }
+  } else if (key === 'Tab') {
+    e.stopPropagation();
+    if (e.shiftKey) {
+      if (e.target === firstElement) {
+        e.preventDefault();
+        lastElement.focus();
+      }
+    } else if (e.target === lastElement) {
+      e.preventDefault();
+      firstElement.focus();
+    }
   }
 };
 
