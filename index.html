@@ -15,22 +15,24 @@
   <title>Les petits plats</title>
 </head>
 
-<body class="mb-48">
+<body class="mb-4 lg:mb-48">
   <header class="flex flex-col items-center justify-center w-full">
-    <div class="flex absolute top-12 left-16 gap-1">
+    <div class="flex absolute top-6 left-10 sm:top-12 sm:left-16 gap-1">
       <img src="./src/assets/svg/logo-text.svg" alt="text">
       <img src="./src/assets/svg/logo-icon.svg" alt="text">
     </div>
 
-    <div class="w-8/12 m-auto items-center justify-center">
-      <div class="px-32 text-center">
-        <h1 class="h1-title mb-8">Cherchez parmi plus de 1500 recettes du quotidien, simples et
-          délicieuses
+    <div class="w-11/12 sm:w-9/12 md:w-8/12 m-auto items-center justify-center">
+      <div class="px-10 sm:px-12 md:px-16 text-center">
+        <h1 class="h1-title mb-4 sm:mb-8 sm:text-2xl md:text-3xl lg:5xl">
+          Cherchez parmi plus de 1500 recettes du quotidien, simples et délicieuses
         </h1>
       </div>
       <div class="relative m-auto">
-        <input id="search-bar" class="w-full py-6 pl-9 rounded-xl focus:outline focus:outline-2"
-          placeholder="Recherchez une recette, un ingrédient...">
+        <input id="search-bar" class="hidden md:block w-full py-6 pl-9 rounded-xl focus:outline focus:outline-2"
+          placeholder="Rechercher une recette, un ingrédient...">
+        <input id="search-bar" class="sm:block md:hidden w-full py-6 pl-9 rounded-xl focus:outline focus:outline-2"
+          placeholder="Rechercher">
 
         <div class="absolute flex right-2.5 bottom-2.5">
           <img src="./src/assets/svg/xmark.svg" class="mr-6">
@@ -40,10 +42,10 @@
     </div>
   </header>
 
-  <main class="mx-24">
+  <main class="mx-4 lg:mx-24">
     <!-- MultiSelects -->
-    <div class="flex justify-between items-center mt-4">
-      <div class="flex gap-16">
+    <div class="flex flex-col gap-4 justify-between mt-4 md:gap-0 md:flex-row md:items-center">
+      <div class="flex flex-col gap-4 md:flex-row lg:gap-16">
 
         <div id="ingredients-select"
           class="relative flex flex-col items-center h-fit bg-white rounded-x-xl rounded-t-xl rounded-b-xl focus:outline focus:outline-2">
@@ -109,12 +111,13 @@
       <div id="count-recipes" class="count-recipes text-xl">
       </div>
     </div>
-    <div id="tags-list" class="grid grid-cols-6 gap-x-2">
+    <div id="tags-list" class="grid grid-cols-2 gap-x-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
 
     </div>
 
     <!-- Recipes list -->
-    <div id="recipes-list" class="grid grid-cols-3 gap-x-12 gap-y-16 mt-14">
+    <div id="recipes-list"
+      class="grid grid-cols-1 gap-x-8 gap-y-12 mt-10 sm:grid-cols-2 md:mt-8 md:gap-x-12 lg:grid-cols-3 lg:mt-14 lg:gap-x-12 lg:gap-y-16">
       <!-- Items -->
     </div>
   </main>
