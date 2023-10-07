@@ -88,6 +88,7 @@ const setMapItem = (elt, prev, tags) => {
  */
 const createListboxElts = (selectElt, eltsMap) => {
   const inputElt = selectElt.querySelector('input');
+  inputElt.className += ' focus:outline focus:outline-2';
   inputElt.value = '';
   inputElt.selectList = eltsMap;
   inputElt.selectElt = selectElt;
@@ -143,7 +144,7 @@ const updateSelectList = (selectElt, eltsMap) => {
   ulElt.innerHTML = '';
   eltsMap.forEach((value, key) => {
     let classes =
-      'flex justify-between py-2.5 p-4 hover:bg-yellow-400 aria-selected:bg-yellow-400 aria-selected:font-bold focus:outline focus:outline-1';
+      'flex justify-between py-2.5 p-4 hover:bg-yellow-400 aria-selected:bg-yellow-400 aria-selected:font-bold focus:outline focus:outline-2';
 
     const liElt = document.createElement('li');
     liElt.setAttribute('aria-selected', value);

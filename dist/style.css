@@ -1202,19 +1202,6 @@ video {
   border-top-right-radius: 0.75rem;
 }
 
-.border-x {
-  border-left-width: 1px;
-  border-right-width: 1px;
-}
-
-.border-t {
-  border-top-width: 1px;
-}
-
-.border-solid {
-  border-style: solid;
-}
-
 .bg-black {
   --tw-bg-opacity: 1;
   background-color: rgb(0 0 0 / var(--tw-bg-opacity));
@@ -1346,11 +1333,6 @@ video {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
-.outline-none {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-}
-
 .outline {
   outline-style: solid;
 }
@@ -1460,30 +1442,34 @@ button > p {
   font-family: var(--font-anton);
 }
 
+[id*='-select']:focus > div[role='listbox'] {
+  top: 55px;
+}
+
+[id*='-select']:not(:focus) {
+  outline: solid 2px white;
+}
+
+[id*='-select']:not(:focus) > div[role='listbox'] {
+  top: 55px;
+}
+
+div[role='listbox'] {
+  left: -2px;
+  right: -2px;
+}
+
 .hover\:bg-yellow-400:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(250 204 21 / var(--tw-bg-opacity));
-}
-
-.focus\:border-x:focus {
-  border-left-width: 1px;
-  border-right-width: 1px;
-}
-
-.focus\:border-t:focus {
-  border-top-width: 1px;
-}
-
-.focus\:border-solid:focus {
-  border-style: solid;
 }
 
 .focus\:outline:focus {
   outline-style: solid;
 }
 
-.focus\:outline-1:focus {
-  outline-width: 1px;
+.focus\:outline-2:focus {
+  outline-width: 2px;
 }
 
 .aria-selected\:bg-yellow-400[aria-selected="true"] {

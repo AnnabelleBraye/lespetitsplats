@@ -74,3 +74,20 @@ button > p {
 .count-recipes {
   font-family: var(--font-anton);
 }
+
+[id*='-select']:focus > div[role='listbox'] {
+  top: 55px;
+}
+
+[id*='-select']:not(:focus) {
+  outline: solid 2px white;
+}
+
+[id*='-select']:not(:focus) > div[role='listbox'] {
+  top: 55px;
+}
+
+div[role='listbox'] {
+  left: -2px;
+  right: -2px;
+}

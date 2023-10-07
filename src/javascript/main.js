@@ -77,13 +77,13 @@ const handleKeydown = (e) => {
   const key = e.key;
   const select = e.target;
 
-  if (key === 'Escape' && e.target.id.includes('-select')) {
+  if (key === 'Escape') {
+    if (!select.id.includes('-select')) {
+      select.parentElement.parentElement.parentElement.focus();
+    }
     multiselect.closeList(select);
   } else if (key === 'Enter' && e.target.id.includes('-select')) {
-    select.classList.toggle('focus:outline');
-    select.classList.toggle('focus:outline-1');
     multiselect.openList(e);
-    select.querySelector('input').focus();
   }
 };
 
