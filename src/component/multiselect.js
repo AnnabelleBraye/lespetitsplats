@@ -252,26 +252,49 @@ const handleKeydown = (e) => {
     } else if (e.target.closest('img')) {
       clearInputValue(e);
     }
-  } else if (
-    (key === 'Tab' && e.target !== selectElt) ||
-    ((key === 'Tab' || e.shiftKey) &&
-      e.target === selectElt &&
-      !e.target.querySelector('[role=listbox]').classList.contains('hidden'))
-  ) {
+  } else if (e.target.closest('img') && allChildren.length === 1) {
+    if (key === 'Tab') {
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.shiftKey) {
+        selectElt.querySelector('input').focus();
+      } else {
+        selectElt.focus();
+      }
+    }
+  } else if (key === 'Tab' && e.target !== selectElt) {
     e.stopPropagation();
     if (e.shiftKey) {
       if (e.target === firstElement) {
-        e.preventDefault();
+        e.stopPropagation();
         lastElement.focus();
       }
     } else if (e.target === lastElement) {
       e.preventDefault();
       firstElement.focus();
     }
+  } else if (
+    key === 'Tab' &&
+    e.target === selectElt &&
+    !e.target.querySelector('[role=listbox]').classList.contains('hidden')
+  ) {
+    e.stopPropagation();
+    if (e.shiftKey) {
+      e.preventDefault();
+
+      if (e.target === firstElement) {
+        if (allChildren.length === 1) {
+          e.stopPropagation();
+          e.target.querySelector('input + div > img').focus();
+        } else {
+          lastElement.focus();
+        }
+      }
+    }
   } else if (key === 'ArrowDown' && e.target.closest('li')) {
     e.preventDefault();
     e.stopPropagation();
-    if (lastLi) {
+    if (lastLi == e.target.closest('li')) {
       firstLi.focus();
     } else {
       e.target.nextSibling.focus();
@@ -279,7 +302,7 @@ const handleKeydown = (e) => {
   } else if (key === 'ArrowUp' && e.target.closest('li')) {
     e.preventDefault();
     e.stopPropagation();
-    if (firstLi) {
+    if (firstLi === e.target.closest('li')) {
       lastLi.focus();
     } else {
       e.target.previousSibling.focus();
