@@ -70,7 +70,10 @@ const filterByNameDescIngredient = (elt, filter) => {
  */
 const updateContent = (filteredList, filter) => {
   localStorage.setItem('recipes-filtered', JSON.stringify(filteredList));
-  localStorage.setItem('search-filter', JSON.stringify(filter));
+  localStorage.setItem(
+    'search-filter',
+    JSON.stringify(filter.length < 3 ? '' : filter)
+  );
   recipesUtils.updateDynamicContent();
 };
 

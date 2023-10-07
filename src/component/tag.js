@@ -85,7 +85,6 @@ const handleKeydown = (e) => {
   const key = e.key;
   const firstElement = document.getElementById('search-bar');
   const allElement = document.querySelectorAll('#tags-list > [tabIndex = "0"]');
-  console.log(`allElement`, allElement);
   const lastElement = allElement[allElement.length - 1];
 
   if (key === 'Enter') {
@@ -95,7 +94,6 @@ const handleKeydown = (e) => {
     e.preventDefault();
     firstElement.focus();
   }
-  console.log(`ici`, key);
 };
 
 export default {
