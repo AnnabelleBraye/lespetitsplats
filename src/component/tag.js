@@ -10,6 +10,7 @@ const tagsList = document.getElementById('tags-list');
 const createTagElt = (name) => {
   const tags = new Map(storageUtils.getDataStorage(`select-tags`, []));
   const tagElt = document.createElement('div');
+  tagElt.tabIndex = 0;
   tagElt.className =
     'flex justify-between w-full mt-5 rounded-xl bg-yellow-400 p-4';
   tagElt.innerHTML = `
@@ -18,9 +19,11 @@ const createTagElt = (name) => {
   `;
 
   const img = tagElt.querySelector('img');
+  img.tabIndex = 0;
   img.tagNameToRemove = name;
   img.selectListId = tags.get(name);
   img.addEventListener('click', removeTagEvent);
+  img.addEventListener('keydown', handleKeydown);
   tagsList.appendChild(tagElt);
 
   storageUtils.updateRecipesStorage(tags.get(name), tags, true);
@@ -76,6 +79,23 @@ const removeTag = (name) => {
 const removeTagEvent = (e) => {
   const tag = e.target.tagNameToRemove;
   removeTag(tag);
+};
+
+const handleKeydown = (e) => {
+  const key = e.key;
+  const firstElement = document.getElementById('search-bar');
+  const allElement = document.querySelectorAll('#tags-list > [tabIndex = "0"]');
+  console.log(`allElement`, allElement);
+  const lastElement = allElement[allElement.length - 1];
+
+  if (key === 'Enter') {
+    removeTagEvent(e);
+    document.getElementById('ustensils-select').focus();
+  } else if (key === 'Tab' && e.target.parentElement === lastElement) {
+    e.preventDefault();
+    firstElement.focus();
+  }
+  console.log(`ici`, key);
 };
 
 export default {

@@ -75,15 +75,23 @@ const init = async () => {
 
 const handleKeydown = (e) => {
   const key = e.key;
-  const select = e.target;
+  const firstElement = document.getElementById('search-bar');
 
+  e.stopPropagation();
   if (key === 'Escape') {
-    if (!select.id.includes('-select')) {
-      select.parentElement.parentElement.parentElement.focus();
+    if (!e.target.id.includes('-select')) {
+      e.target.parentElement.parentElement.parentElement.focus();
     }
-    multiselect.closeList(select);
+    multiselect.closeList(e.target);
   } else if (key === 'Enter' && e.target.id.includes('-select')) {
     multiselect.openList(e);
+  } else if (key === 'Tab') {
+    console.log(`key`, key);
+    if (e.keyShift) {
+      if (e.target === firstElement) {
+        lastElement.focus();
+      }
+    }
   }
 };
 

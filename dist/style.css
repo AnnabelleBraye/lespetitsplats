@@ -1464,6 +1464,11 @@ div[role='listbox'] {
   background-color: rgb(250 204 21 / var(--tw-bg-opacity));
 }
 
+.focus\:bg-yellow-400:focus {
+  --tw-bg-opacity: 1;
+  background-color: rgb(250 204 21 / var(--tw-bg-opacity));
+}
+
 .focus\:outline:focus {
   outline-style: solid;
 }

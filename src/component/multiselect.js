@@ -144,7 +144,7 @@ const updateSelectList = (selectElt, eltsMap) => {
   ulElt.innerHTML = '';
   eltsMap.forEach((value, key) => {
     let classes =
-      'flex justify-between py-2.5 p-4 hover:bg-yellow-400 aria-selected:bg-yellow-400 aria-selected:font-bold focus:outline focus:outline-2';
+      'flex justify-between py-2.5 p-4 hover:bg-yellow-400 aria-selected:bg-yellow-400 aria-selected:font-bold focus:outline focus:outline-2 focus:bg-yellow-400';
 
     const liElt = document.createElement('li');
     liElt.setAttribute('aria-selected', value);
@@ -207,7 +207,7 @@ const closeOthersLists = (selectId) => {
  */
 const closeList = (select) => {
   const listbox = select.querySelector('[role="listbox"]');
-  if (!listbox.classList.contains('hidden')) {
+  if (listbox && !listbox.classList.contains('hidden')) {
     const ul = listbox.querySelector('ul');
     select.classList.add('rounded-b-xl');
     ul.classList.add('hidden');
