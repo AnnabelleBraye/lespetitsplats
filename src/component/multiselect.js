@@ -230,6 +230,9 @@ const handleKeydown = (e) => {
   const key = e.key;
   const firstElement = selectElt;
   const allChildren = selectElt.querySelectorAll('input, li');
+  const firstLi = allChildren.length > 1 ? allChildren[1] : null;
+  const lastLi =
+    allChildren.length > 1 ? allChildren[allChildren.length - 1] : null;
   const lastElement = allChildren[allChildren.length - 1];
 
   if (key === 'Escape') {
@@ -249,7 +252,12 @@ const handleKeydown = (e) => {
     } else if (e.target.closest('img')) {
       clearInputValue(e);
     }
-  } else if (key === 'Tab') {
+  } else if (
+    (key === 'Tab' && e.target !== selectElt) ||
+    ((key === 'Tab' || e.shiftKey) &&
+      e.target === selectElt &&
+      !e.target.querySelector('[role=listbox]').classList.contains('hidden'))
+  ) {
     e.stopPropagation();
     if (e.shiftKey) {
       if (e.target === firstElement) {
@@ -259,6 +267,22 @@ const handleKeydown = (e) => {
     } else if (e.target === lastElement) {
       e.preventDefault();
       firstElement.focus();
+    }
+  } else if (key === 'ArrowDown' && e.target.closest('li')) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (lastLi) {
+      firstLi.focus();
+    } else {
+      e.target.nextSibling.focus();
+    }
+  } else if (key === 'ArrowUp' && e.target.closest('li')) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (firstLi) {
+      lastLi.focus();
+    } else {
+      e.target.previousSibling.focus();
     }
   }
 };
