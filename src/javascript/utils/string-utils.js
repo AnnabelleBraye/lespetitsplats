@@ -17,4 +17,16 @@ const trimAndLowerCase = (str) => {
   return str.trim().toLowerCase();
 };
 
-export default { formatSelectName, trimAndLowerCase };
+/**
+ * Remove accents and space on a string
+ * @param {*} str
+ * @returns
+ */
+const normalizeNFD = (str) => {
+  return str
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replaceAll("'", ' ');
+};
+
+export default { formatSelectName, trimAndLowerCase, normalizeNFD };

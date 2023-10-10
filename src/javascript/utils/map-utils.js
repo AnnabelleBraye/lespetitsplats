@@ -7,9 +7,15 @@ import stringUtils from './string-utils.js';
  * @returns map
  */
 const filterMap = (map, filter) => {
-  const filteredList = [...map].filter((elt) =>
-    stringUtils.trimAndLowerCase(elt[0]).includes(filter)
-  );
+  const filteredList = [...map].filter((elt) => {
+    const normalizedName = stringUtils.trimAndLowerCase(
+      stringUtils.normalizeNFD(elt[0])
+    );
+    const normalizedFilter = stringUtils.trimAndLowerCase(
+      stringUtils.normalizeNFD(filter)
+    );
+    return normalizedName.includes(normalizedFilter);
+  });
 
   const filteredMap = new Map();
   filteredList.forEach((elt) => filteredMap.set(elt[0], elt[1]));

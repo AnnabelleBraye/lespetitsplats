@@ -1,5 +1,6 @@
 import recipesUtils from '../javascript/utils/recipes.js';
 import storageUtils from '../javascript/utils/storage-utils.js';
+import stringUtils from '../javascript/utils/string-utils.js';
 
 /**
  * Starts filter at 3 caracters and update recipes-filtered list and search-filter in storage
@@ -15,7 +16,7 @@ const filterList = (filter) => {
   if (filter) {
     if (filter.length >= 3) {
       if (oldFilter.length < filter.length) {
-        filteredList = listToFilter.filter((elt) =>
+        filteredList = recipes.filter((elt) =>
           filterByNameDescIngredient(elt, filter)
         );
       } else {
@@ -56,10 +57,17 @@ const filterListEvent = (e) => {
  * @returns
  */
 const filterByNameDescIngredient = (elt, filter) => {
+  const filterNormalized = stringUtils.normalizeNFD(filter);
+  let normalizedName = stringUtils.normalizeNFD(elt.name);
+  let normalizedDesc = stringUtils.normalizeNFD(elt.description);
   return (
-    elt.name.toLowerCase().includes(filter) ||
-    elt.description.toLowerCase().includes(filter) ||
-    elt.ingredients.some((el) => el.ingredient.toLowerCase().includes(filter))
+    normalizedName.toLowerCase().includes(filterNormalized) ||
+    normalizedDesc.toLowerCase().includes(filterNormalized) ||
+    elt.ingredients.some((el) => {
+      let ingredient = stringUtils.normalizeNFD(el.ingredient);
+
+      return ingredient.toLowerCase().includes(filterNormalized);
+    })
   );
 };
 

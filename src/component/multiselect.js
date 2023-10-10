@@ -127,13 +127,11 @@ const clearInputValue = (e) => {
  * @param {*} e
  */
 const filterAndUpdate = (e) => {
-  const filter = stringUtils.trimAndLowerCase(e.target.value);
-
   const selectElt = e.target.selectElt;
   const selectList = new Map(
     storageUtils.getDataStorage(`${selectElt.id}-list`, [])
   );
-  const filteredMap = mapUtils.filterMap(selectList, filter);
+  const filteredMap = mapUtils.filterMap(selectList, e.target.value);
   updateSelectList(selectElt, filteredMap);
 };
 
