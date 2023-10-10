@@ -1587,6 +1587,10 @@ div[role='listbox'] {
     margin-top: 3.5rem;
   }
 
+  .md\:mt-8 {
+    margin-top: 2rem;
+  }
+
   .md\:block {
     display: block;
   }

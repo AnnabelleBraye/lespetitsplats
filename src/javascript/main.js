@@ -9,11 +9,14 @@ const searchBarElt = document.getElementById('search-bar');
 
 const initSearchFilter = () => {
   const filter = storageUtils.getDataStorage('search-filter', '');
+
+  searchBarElt.addEventListener('input', searchbar.filterListEvent);
   searchBarElt.value = filter;
   searchbar.filterList(filter);
   const xmarkInputElt = searchBarElt.parentElement.querySelector('div > img');
   xmarkInputElt.tabIndex = 0;
   xmarkInputElt.addEventListener('click', searchbar.resetFilter);
+  xmarkInputElt.addEventListener('keydown', handleKeydown);
 };
 
 /**
@@ -53,7 +56,6 @@ const initTagsList = () => {
  * Get recipes, tags and multiselect when init
  */
 const init = async () => {
-  searchBarElt.addEventListener('input', searchbar.filterListEvent);
   window.addEventListener('keydown', handleKeydown, false);
 
   let recipes = storageUtils.getDataStorage('recipes', recipesList);
@@ -83,8 +85,12 @@ const handleKeydown = (e) => {
       e.target.parentElement.parentElement.parentElement.focus();
     }
     multiselect.closeList(e.target);
-  } else if (key === 'Enter' && e.target.id.includes('-select')) {
-    multiselect.openList(e);
+  } else if (key === 'Enter') {
+    if (e.target.id.includes('-select')) {
+      multiselect.openList(e);
+    } else if (e.target.id === 'input-xmark') {
+      searchbar.resetFilter();
+    }
   }
 };
 
