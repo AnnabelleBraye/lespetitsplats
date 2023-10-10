@@ -145,27 +145,38 @@ const filterAndUpdate = (e) => {
 const updateSelectList = (selectElt, eltsMap) => {
   const ulElt = selectElt.querySelector('ul');
   ulElt.innerHTML = '';
-  eltsMap.forEach((value, key) => {
-    let classes =
-      'flex justify-between py-2.5 p-4 hover:bg-yellow-400 aria-selected:bg-yellow-400 aria-selected:font-bold focus:outline focus:outline-2 focus:bg-yellow-400';
+  if (eltsMap && eltsMap.size > 0) {
+    showNoTagElt(selectElt, false);
+    eltsMap.forEach((value, key) => {
+      let classes =
+        'flex justify-between py-2.5 p-4 hover:bg-yellow-400 aria-selected:bg-yellow-400 aria-selected:font-bold focus:outline focus:outline-2 focus:bg-yellow-400';
 
-    const liElt = document.createElement('li');
-    liElt.setAttribute('aria-selected', value);
-    liElt.tabIndex = 0;
-    liElt.textTag = key;
-    liElt.selectListId = selectElt.id;
-    liElt.addEventListener('click', selectListItem, false);
-    liElt.addEventListener('keydown', handleKeydown, false);
-    liElt.className = classes;
-    const imgClass = !value ? 'invisible' : '';
-    liElt.innerHTML = `
-    ${key}
-    <img class="${imgClass}" src="./src/assets/svg/xmark-rounded.svg">
-    `;
-    const imgElt = liElt.querySelector('img');
-    imgElt.tabIndex = 0;
-    ulElt.appendChild(liElt);
-  });
+      const liElt = document.createElement('li');
+      liElt.setAttribute('aria-selected', value);
+      liElt.tabIndex = 0;
+      liElt.textTag = key;
+      liElt.selectListId = selectElt.id;
+      liElt.addEventListener('click', selectListItem, false);
+      liElt.addEventListener('keydown', handleKeydown, false);
+      liElt.className = classes;
+      const imgClass = !value ? 'invisible' : '';
+      liElt.innerHTML = `
+        ${key}
+        <img class="${imgClass}" src="./src/assets/svg/xmark-rounded.svg">
+      `;
+      const imgElt = liElt.querySelector('img');
+      imgElt.tabIndex = 0;
+      ulElt.appendChild(liElt);
+    });
+  } else {
+    showNoTagElt(selectElt, true);
+  }
+};
+
+const showNoTagElt = (selectElt, show) => {
+  const listboxChildren = selectElt.querySelectorAll('div');
+  const noTagElt = listboxChildren[listboxChildren.length - 1];
+  show ? noTagElt.classList.remove('hidden') : noTagElt.classList.add('hidden');
 };
 
 /**

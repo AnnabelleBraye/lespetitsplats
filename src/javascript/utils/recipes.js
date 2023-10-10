@@ -5,6 +5,7 @@ import multiselect from '../../component/multiselect.js';
 import searchBar from '../../component/search-bar.js';
 
 const recipesListElt = document.getElementById('recipes-list');
+const noRecipeElt = document.getElementById('no-recipe');
 
 /**
  * Update recipes list, recipes counter and multiselects lists
@@ -31,11 +32,41 @@ const generateRecipesList = () => {
     storageUtils.getDataStorage('recipes', [])
   );
   recipesListElt.innerHTML = '';
-  recipes.forEach((recipe) => {
-    const recipeTemplate = recipeFactory(recipe);
-    const recipeElt = recipeTemplate.getRecipeCard();
-    recipesListElt.appendChild(recipeElt);
-  });
+
+  if (recipes && recipes.length > 0) {
+    showRecipesList(true);
+    recipes.forEach((recipe) => {
+      const recipeTemplate = recipeFactory(recipe);
+      const recipeElt = recipeTemplate.getRecipeCard();
+      recipesListElt.appendChild(recipeElt);
+    });
+  } else {
+    showRecipesList(false);
+    noRecipeElt.innerHTML = '';
+    const filter = storageUtils.getDataStorage('search-filter', '');
+    const noRecipeTitle = document.createElement('h2');
+    noRecipeTitle.classList.add('md:text-2xl');
+    const subTitle = document.createElement('h3');
+    subTitle.classList.add('md:text-lg');
+    subTitle.textContent =
+      'Vous pouvez chercher "tarte aux pommes", "poisson", ...';
+    noRecipeTitle.classList.add('font-light');
+    noRecipeTitle.innerHTML = `Aucune recette ne contient <span class="font-bold">"${filter}"</span>.`;
+    noRecipeElt.appendChild(noRecipeTitle);
+    noRecipeElt.appendChild(subTitle);
+  }
+};
+
+const showRecipesList = (show) => {
+  if (show) {
+    recipesListElt.classList.remove('hidden');
+    noRecipeElt.classList.add('hidden');
+    noRecipeElt.classList.remove('flex');
+  } else {
+    recipesListElt.classList.add('hidden');
+    noRecipeElt.classList.remove('hidden');
+    noRecipeElt.classList.add('flex');
+  }
 };
 
 /**
