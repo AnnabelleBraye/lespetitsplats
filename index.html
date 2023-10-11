@@ -29,12 +29,12 @@
         </h1>
       </div>
       <div class="relative m-auto">
-        <input id="search-bar" class="hidden md:block w-full py-6 pl-9 rounded-xl focus:outline focus:outline-2"
+        <input id="search-bar" class="w-full py-6 pl-9 rounded-xl focus:outline focus:outline-2"
           placeholder="Rechercher une recette, un ingrédient...">
 
         <div class="absolute flex right-2.5 bottom-2.5">
-          <img id="input-xmark" src="./src/assets/svg/xmark.svg" class="mr-6">
-          <img src="./src/assets/svg/search-icon.svg" class="bg-black rounded-xl p-3">
+          <img id="input-xmark" src="./src/assets/svg/xmark.svg" aria-label="Effacer le champ" class="mr-6">
+          <img src="./src/assets/svg/search-icon.svg" aria-hidden="true" class="bg-black rounded-xl p-3">
         </div>
       </div>
     </div>
@@ -45,23 +45,23 @@
     <div class="flex flex-col gap-4 justify-between mt-4 md:gap-0 md:flex-row md:items-center">
       <div class="flex flex-col gap-4 md:flex-row lg:gap-16">
 
-        <div id="ingredients-select"
+        <div id="ingredients-select" role="button" aria-expanded="false"
           class="relative flex flex-col items-center h-fit bg-white rounded-x-xl rounded-t-xl rounded-b-xl focus:outline focus:outline-2">
-          <div role="button" class="flex w-full justify-between items-center px-4 my-4">
+          <div class="flex w-full justify-between items-center px-4 my-4">
             <p class="pr-20">Ingrédients</p>
             <span class="fa-solid fa-chevron-down"></span>
           </div>
-          <div role="listbox"
+          <div role="listbox" aria-multiselectable="true"
             class="shadow-md absolute inset-x-0 top-12 bg-white z-10 rounded-b-xl h-60 overflow-auto hidden">
             <div class="relative text-gray-300 m-4 mt-3.5">
               <input class="w-full p-2 pr-2.5 outline outline-offset-2 rounded-sm">
 
               <div class="absolute flex right-2.5 bottom-2.5">
                 <img src="./src/assets/svg/small-xmark.svg" class="mr-2.5">
-                <img src="./src/assets/svg/small-search-icon.svg">
+                <img src="./src/assets/svg/small-search-icon.svg" aria-hidden="true">
               </div>
             </div>
-            <ul class="ronded-b-xl hidden">
+            <ul class="rounded-b-xl hidden">
             </ul>
             <div class="text-lg md:text-sm p-4 py-2.5 rounded-xl hidden">
               Aucun tag ne correspond à la recherche
@@ -69,22 +69,23 @@
           </div>
         </div>
 
-        <div id="appliances-select"
+        <div id="appliances-select" role="button" aria-expanded="false"
           class="relative flex flex-col items-center h-fit bg-white rounded-x-xl rounded-t-xl rounded-b-xl focus:outline focus:outline-2">
-          <div role="button" class="flex w-full justify-between items-center px-4 my-4">
+          <div class="flex w-full justify-between items-center px-4 my-4">
             <p class="pr-20">Appareils</p>
             <span class="fa-solid fa-chevron-down"></span>
           </div>
-          <div role="listbox" class="shadow-md absolute inset-x-0 bg-white z-10 rounded-b-xl h-60 overflow-auto hidden">
+          <div role="listbox" aria-multiselectable="true"
+            class="shadow-md absolute inset-x-0 bg-white z-10 rounded-b-xl h-60 overflow-auto hidden">
             <div class="relative text-gray-300 m-4 mt-3.5">
               <input class="w-full p-2 pr-2.5 outline outline-offset-2 rounded-sm">
 
               <div class="absolute flex right-2.5 bottom-2.5">
                 <img src="./src/assets/svg/small-xmark.svg" class="mr-2.5">
-                <img src="./src/assets/svg/small-search-icon.svg">
+                <img src="./src/assets/svg/small-search-icon.svg" aria-hidden="true">
               </div>
             </div>
-            <ul class="ronded-b-xl hidden">
+            <ul class="rounded-b-xl hidden">
             </ul>
             <div class="text-lg md:text-sm p-4 py-2.5 rounded-xl hidden">
               Aucun tag ne correspond à la recherche
@@ -92,23 +93,23 @@
           </div>
         </div>
 
-        <div id="ustensils-select"
+        <div id="ustensils-select" role="button" aria-expanded="false"
           class="relative flex flex-col items-center h-fit bg-white rounded-x-xl rounded-t-xl rounded-b-xl focus:outline focus:outline-2">
-          <div role="button" class="flex w-full justify-between items-center px-4 my-4">
+          <div class="flex w-full justify-between items-center px-4 my-4">
             <p class="pr-20">Ustensiles</p>
             <span class="fa-solid fa-chevron-down"></span>
           </div>
-          <div role="listbox"
+          <div role="listbox" aria-multiselectable="true"
             class="shadow-md absolute inset-x-0 top-12 bg-white z-10 rounded-b-xl h-60 overflow-auto hidden">
             <div class="relative text-gray-300 m-4 mt-3.5">
               <input class="w-full p-2 pr-2.5 outline outline-offset-2 rounded-sm">
 
               <div class="absolute flex right-2.5 bottom-2.5">
                 <img src="./src/assets/svg/small-xmark.svg" class="mr-2.5">
-                <img src="./src/assets/svg/small-search-icon.svg">
+                <img src="./src/assets/svg/small-search-icon.svg" aria-hidden="true">
               </div>
             </div>
-            <ul class="ronded-b-xl hidden">
+            <ul class="rounded-b-xl hidden">
             </ul>
             <div class="text-lg md:text-sm p-4 py-2.5 rounded-xl hidden">
               Aucun tag ne correspond à la recherche

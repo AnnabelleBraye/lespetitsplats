@@ -20,6 +20,7 @@ const createTagElt = (name) => {
 
   const img = tagElt.querySelector('img');
   img.tabIndex = 0;
+  img.ariaLabel = 'Supprimer le tag';
   img.tagNameToRemove = name;
   img.selectListId = tags.get(name);
   img.addEventListener('click', removeTagEvent);

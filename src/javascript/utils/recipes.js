@@ -51,7 +51,7 @@ const generateRecipesList = () => {
     subTitle.textContent =
       'Vous pouvez chercher "tarte aux pommes", "poisson", ...';
     noRecipeTitle.classList.add('font-light');
-    noRecipeTitle.innerHTML = `Aucune recette ne contient <span class="font-bold">"${filter}"</span>.`;
+    noRecipeTitle.innerHTML = `Aucune recette ne contient "${filter}".`;
     noRecipeElt.appendChild(noRecipeTitle);
     noRecipeElt.appendChild(subTitle);
   }
