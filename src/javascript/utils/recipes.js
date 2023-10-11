@@ -235,10 +235,20 @@ const filterRecipesByUstensils = (recipesList, tagsList) => {
   return newList;
 };
 
+/**
+ * Sort recipes by name
+ */
+const orderRecipesByName = (recipes) => {
+  return recipes.sort((a, b) => {
+    return a.name.localeCompare(b.name);
+  });
+};
+
 export default {
   updateDynamicContent,
   generateRecipesList,
   updateRecipesCount,
   filterRecipesByAllTags,
   updateRecipesFilteredBySearchAndAllTags,
+  orderRecipesByName,
 };

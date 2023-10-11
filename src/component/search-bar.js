@@ -15,17 +15,11 @@ const filterList = (filter) => {
   const tagsList = new Map(storageUtils.getDataStorage('select-tags', []));
   if (filter) {
     if (filter.length >= 3) {
-      if (oldFilter.length < filter.length) {
-        filteredList = recipes.filter((elt) =>
-          filterByNameDescIngredient(elt, filter)
-        );
-      } else {
-        filteredList = recipesUtils.filterRecipesByAllTags(recipes, tagsList);
+      filteredList = recipesUtils.filterRecipesByAllTags(recipes, tagsList);
 
-        filteredList = filteredList.filter((elt) =>
-          filterByNameDescIngredient(elt, filter)
-        );
-      }
+      filteredList = filteredList.filter((elt) =>
+        filterByNameDescIngredient(elt, filter)
+      );
     } else if (oldFilter.length < 3 && oldFilter.length > filter.length) {
       filteredList = listToFilter;
     } else {
@@ -77,7 +71,9 @@ const filterByNameDescIngredient = (elt, filter) => {
  * @param {*} filter
  */
 const updateContent = (filteredList, filter) => {
-  localStorage.setItem('recipes-filtered', JSON.stringify(filteredList));
+  const filteredRecipes = recipesUtils.orderRecipesByName(filteredList);
+
+  localStorage.setItem('recipes-filtered', JSON.stringify(filteredRecipes));
   localStorage.setItem(
     'search-filter',
     JSON.stringify(filter.length < 3 ? '' : filter)

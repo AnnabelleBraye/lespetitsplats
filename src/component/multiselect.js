@@ -62,9 +62,10 @@ const generateSelectList = (selectId) => {
   }, new Map());
 
   const selectElt = document.getElementById(selectId);
+  let orderedMap = orderMapByName(eltsMap);
   // Update the select list items in storage
-  localStorage.setItem(`${selectId}-list`, JSON.stringify([...eltsMap]));
-  createListboxElts(selectElt, eltsMap);
+  localStorage.setItem(`${selectId}-list`, JSON.stringify([...orderedMap]));
+  createListboxElts(selectElt, orderedMap);
 };
 
 /**
@@ -80,6 +81,19 @@ const setMapItem = (elt, prev, tags) => {
     prev.set(name, tags.includes(name));
   }
   return prev;
+};
+
+/**
+ * Order map keys
+ */
+const orderMapByName = (map) => {
+  const names = [...map.keys()];
+  const sortedNames = names.sort((a, b) => a.localeCompare(b));
+  const newMap = new Map();
+  sortedNames.forEach((name) => {
+    newMap.set(name, map.get(name));
+  });
+  return newMap;
 };
 
 /**

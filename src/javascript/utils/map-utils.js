@@ -8,11 +8,11 @@ import stringUtils from './string-utils.js';
  */
 const filterMap = (map, filter) => {
   const filteredList = [...map].filter((elt) => {
-    const normalizedName = stringUtils.trimAndLowerCase(
-      stringUtils.normalizeNFD(elt[0])
+    const normalizedName = stringUtils.normalizeNFD(
+      stringUtils.trimAndLowerCase(elt[0])
     );
-    const normalizedFilter = stringUtils.trimAndLowerCase(
-      stringUtils.normalizeNFD(filter)
+    const normalizedFilter = stringUtils.normalizeNFD(
+      stringUtils.trimAndLowerCase(filter)
     );
     return normalizedName.includes(normalizedFilter);
   });
