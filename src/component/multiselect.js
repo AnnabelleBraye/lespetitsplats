@@ -9,6 +9,10 @@ import stringUtils from '../javascript/utils/string-utils.js';
 const openList = (e) => {
   stopPropagation(e);
   const select = e.currentTarget.id ? e.currentTarget : e.target;
+  select.setAttribute(
+    'aria-expanded',
+    select.getAttribute('aria-expanded' === 'true' ? 'false' : 'true')
+  );
   select.addEventListener('keydown', handleKeydown);
   const selectId = select.id;
 
@@ -105,6 +109,7 @@ const createListboxElts = (selectElt, eltsMap) => {
   const inputElt = selectElt.querySelector('input');
   inputElt.className += ' focus:outline focus:outline-2';
   inputElt.value = '';
+  inputElt.ariaLabel = 'Filtrer par';
   inputElt.selectList = eltsMap;
   inputElt.selectElt = selectElt;
   inputElt.addEventListener('click', stopPropagation, false);
@@ -113,6 +118,7 @@ const createListboxElts = (selectElt, eltsMap) => {
 
   const clearInputElt = selectElt.querySelector('div > img');
   clearInputElt.tabIndex = 0;
+  clearInputElt.ariaLabel = `Supprimer le filtre`;
   clearInputElt.inputElt = inputElt;
   clearInputElt.parentListbox = selectElt;
   clearInputElt.addEventListener('click', clearInputValue, false);
@@ -165,6 +171,8 @@ const updateSelectList = (selectElt, eltsMap) => {
 
       const liElt = document.createElement('li');
       liElt.setAttribute('aria-selected', value);
+      liElt.ariaLabel = key;
+      liElt.role = 'option';
       liElt.tabIndex = 0;
       liElt.textTag = key;
       liElt.selectListId = selectElt.id;
@@ -174,7 +182,7 @@ const updateSelectList = (selectElt, eltsMap) => {
       const imgClass = !value ? 'invisible' : '';
       liElt.innerHTML = `
         ${key}
-        <img class="${imgClass}" src="./src/assets/svg/xmark-rounded.svg">
+        <img class="${imgClass}" alt="Supprimer le tag" src="./src/assets/svg/xmark-rounded.svg">
       `;
       const imgElt = liElt.querySelector('img');
       imgElt.tabIndex = 0;
@@ -266,6 +274,7 @@ const handleKeydown = (e) => {
     e.stopPropagation();
   } else if (key === 'Enter' && !e.target.id.includes('-select')) {
     e.stopPropagation();
+    e.preventDefault();
     if (e.target.closest('li')) {
       selectListItem(e);
       const liElt = e.target.closest('li');
