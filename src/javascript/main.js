@@ -59,6 +59,7 @@ const init = async () => {
   window.addEventListener('keydown', handleKeydown, false);
 
   let recipes = storageUtils.getDataStorage('recipes', recipesList);
+  recipes = recipesUtils.orderRecipesByName(recipes);
   // SetItem for first init
   localStorage.setItem('recipes', JSON.stringify(recipes));
   // If not first init, replace all recipes by filtered recipes
@@ -89,7 +90,6 @@ const handleKeydown = (e) => {
     if (e.target.id.includes('-select')) {
       multiselect.openList(e);
     } else if (e.target.id === 'input-xmark') {
-      console.log(`ici ???`);
       searchbar.resetFilter();
     }
   }
