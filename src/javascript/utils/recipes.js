@@ -156,7 +156,7 @@ const updateRecipesFilteredBySearchAndAllTags = (tags, isAddingTag) => {
 const filterRecipesByIngredients = (recipesList, tagsList) => {
   const newList = [];
 
-  for (const recipe of recipesList) {
+  recipesList.forEach((recipe) => {
     let isAllTagsPresent = true;
 
     tagsList.forEach((tag) => {
@@ -173,7 +173,7 @@ const filterRecipesByIngredients = (recipesList, tagsList) => {
     if (isAllTagsPresent) {
       newList.push(recipe);
     }
-  }
+  });
 
   return newList;
 };
@@ -187,7 +187,7 @@ const filterRecipesByIngredients = (recipesList, tagsList) => {
 const filterRecipesByAppliances = (recipesList, tagsList) => {
   const newList = [];
 
-  for (const recipe of recipesList) {
+  recipesList.forEach((recipe) => {
     let isAllTagsPresent = true;
 
     tagsList.forEach((tag) => {
@@ -200,7 +200,7 @@ const filterRecipesByAppliances = (recipesList, tagsList) => {
     if (isAllTagsPresent) {
       newList.push(recipe);
     }
-  }
+  });
 
   return newList;
 };
@@ -214,7 +214,7 @@ const filterRecipesByAppliances = (recipesList, tagsList) => {
 const filterRecipesByUstensils = (recipesList, tagsList) => {
   const newList = [];
 
-  for (const recipe of recipesList) {
+  recipesList.forEach((recipe) => {
     let isAllTagsPresent = true;
     tagsList.forEach((tag) => {
       if (
@@ -230,7 +230,7 @@ const filterRecipesByUstensils = (recipesList, tagsList) => {
     if (isAllTagsPresent) {
       newList.push(recipe);
     }
-  }
+  });
 
   return newList;
 };
