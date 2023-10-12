@@ -30,15 +30,15 @@ const initMultiselects = () => {
     const multiselects = document.querySelectorAll(
       '#ingredients-select, #appliances-select, #ustensils-select'
     );
-    multiselects.forEach((select) => {
+    for (const select of multiselects) {
       multiselect.closeList(select);
-    });
+    }
   });
 
-  multiselects.forEach((select) => {
+  for (const select of multiselects) {
     select.addEventListener('click', multiselect.openList, false);
     select.tabIndex = 0;
-  });
+  }
 };
 
 /**

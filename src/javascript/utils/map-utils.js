@@ -7,18 +7,24 @@ import stringUtils from './string-utils.js';
  * @returns map
  */
 const filterMap = (map, filter) => {
-  const filteredList = [...map].filter((elt) => {
+  const filteredList = [];
+  for (const elt of [...map]) {
     const normalizedName = stringUtils.normalizeNFD(
       stringUtils.trimAndLowerCase(elt[0])
     );
     const normalizedFilter = stringUtils.normalizeNFD(
       stringUtils.trimAndLowerCase(filter)
     );
-    return normalizedName.includes(normalizedFilter);
-  });
+
+    if (normalizedName.includes(normalizedFilter)) {
+      filteredList.push(elt);
+    }
+  }
 
   const filteredMap = new Map();
-  filteredList.forEach((elt) => filteredMap.set(elt[0], elt[1]));
+  for (const elt of filteredList) {
+    filteredMap.set(elt[0], elt[1]);
+  }
 
   return filteredMap;
 };

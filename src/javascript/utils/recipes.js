@@ -18,9 +18,10 @@ const updateDynamicContent = () => {
   const multiselects = document.querySelectorAll(
     '#ingredients-select, #appliances-select, #ustensils-select'
   );
-  multiselects.forEach((select) => {
+
+  for (const select of multiselects) {
     multiselect.generateSelectList(select.id);
-  });
+  }
 };
 
 /**
@@ -35,11 +36,11 @@ const generateRecipesList = () => {
 
   if (recipes && recipes.length > 0) {
     showRecipesList(true);
-    recipes.forEach((recipe) => {
+    for (const recipe of recipes) {
       const recipeTemplate = recipeFactory(recipe);
       const recipeElt = recipeTemplate.getRecipeCard();
       recipesListElt.appendChild(recipeElt);
-    });
+    }
   } else {
     showRecipesList(false);
     noRecipeElt.innerHTML = '';
@@ -108,8 +109,7 @@ const filterRecipesByAllTags = (recipes, tags) => {
   const list1 = filterRecipesByIngredients(recipes, ingredientsList);
   const list2 = filterRecipesByAppliances(recipes, appliancesList);
   const list3 = filterRecipesByUstensils(recipes, ustensilsList);
-
-  recipes.forEach((recipe) => {
+  for (const recipe of recipes) {
     if (
       list1.includes(recipe) &&
       list2.includes(recipe) &&
@@ -117,7 +117,7 @@ const filterRecipesByAllTags = (recipes, tags) => {
     ) {
       filteredRecipes.push(recipe);
     }
-  });
+  }
 
   localStorage.setItem('recipes-filtered', JSON.stringify(filteredRecipes));
   return filteredRecipes;
@@ -139,9 +139,14 @@ const updateRecipesFilteredBySearchAndAllTags = (tags, isAddingTag) => {
 
   const filter = storageUtils.getDataStorage('search-filter', '');
   if (filter && filter.length >= 3) {
-    recipes = recipes.filter((recipe) =>
-      searchBar.filterByNameDescIngredient(recipe, filter)
-    );
+    const list = [];
+    for (const recipe of recipes) {
+      if (searchBar.filterByNameDescIngredient(recipe, filter)) {
+        list.push(recipe);
+      }
+    }
+
+    recipes = list;
   }
 
   filterRecipesByAllTags(recipes, tags);
@@ -156,24 +161,25 @@ const updateRecipesFilteredBySearchAndAllTags = (tags, isAddingTag) => {
 const filterRecipesByIngredients = (recipesList, tagsList) => {
   const newList = [];
 
-  recipesList.forEach((recipe) => {
+  for (const recipe of recipesList) {
     let isAllTagsPresent = true;
 
-    tagsList.forEach((tag) => {
-      if (
-        !recipe.ingredients
-          .map((elt) => stringUtils.formatSelectName(elt.ingredient))
-          .includes(tag)
-      ) {
+    const namesList = [];
+    for (const elt of recipe.ingredients) {
+      namesList.push(stringUtils.formatSelectName(elt.ingredient));
+    }
+
+    for (const tag of tagsList) {
+      if (!namesList.includes(tag)) {
         isAllTagsPresent = false;
-        return false;
+        break;
       }
-    });
+    }
 
     if (isAllTagsPresent) {
       newList.push(recipe);
     }
-  });
+  }
 
   return newList;
 };
@@ -187,20 +193,20 @@ const filterRecipesByIngredients = (recipesList, tagsList) => {
 const filterRecipesByAppliances = (recipesList, tagsList) => {
   const newList = [];
 
-  recipesList.forEach((recipe) => {
+  for (const recipe of recipesList) {
     let isAllTagsPresent = true;
 
-    tagsList.forEach((tag) => {
+    for (const tag of tagsList) {
       if (recipe.appliance !== tag) {
         isAllTagsPresent = false;
-        return false;
+        break;
       }
-    });
+    }
 
     if (isAllTagsPresent) {
       newList.push(recipe);
     }
-  });
+  }
 
   return newList;
 };
@@ -214,23 +220,25 @@ const filterRecipesByAppliances = (recipesList, tagsList) => {
 const filterRecipesByUstensils = (recipesList, tagsList) => {
   const newList = [];
 
-  recipesList.forEach((recipe) => {
+  for (const recipe of recipesList) {
     let isAllTagsPresent = true;
-    tagsList.forEach((tag) => {
-      if (
-        !recipe.ustensils
-          .map((elt) => stringUtils.formatSelectName(elt))
-          .includes(tag)
-      ) {
+
+    const namesList = [];
+    for (const elt of recipe.ustensils) {
+      namesList.push(stringUtils.formatSelectName(elt));
+    }
+
+    for (const tag of tagsList) {
+      if (!namesList.includes(tag)) {
         isAllTagsPresent = false;
-        return false;
+        break;
       }
-    });
+    }
 
     if (isAllTagsPresent) {
       newList.push(recipe);
     }
-  });
+  }
 
   return newList;
 };

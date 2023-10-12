@@ -12,14 +12,19 @@ const filterList = (filter) => {
   const oldFilter = storageUtils.getDataStorage('search-filter', '');
   let filteredList = [];
 
+  const start = performance.now();
+  // console.log(`time`, time);
   const tagsList = new Map(storageUtils.getDataStorage('select-tags', []));
   if (filter) {
     if (filter.length >= 3) {
       filteredList = recipesUtils.filterRecipesByAllTags(recipes, tagsList);
-
-      filteredList = filteredList.filter((elt) =>
-        filterByNameDescIngredient(elt, filter)
-      );
+      const list = [];
+      for (const elt of filteredList) {
+        if (filterByNameDescIngredient(elt, filter)) {
+          list.push(elt);
+        }
+      }
+      filteredList = list;
     } else if (oldFilter.length < 3 && oldFilter.length > filter.length) {
       filteredList = listToFilter;
     } else {
@@ -32,6 +37,8 @@ const filterList = (filter) => {
 
     updateContent(filteredList, filter);
   }
+  const end = performance.now();
+  console.log(`it tooks ${end - start} ms`);
 };
 
 /**

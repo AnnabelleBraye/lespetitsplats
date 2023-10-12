@@ -40,7 +40,7 @@ const recipeFactory = (recipe) => {
   const createIngredientsList = () => {
     let html = '';
 
-    recipe.ingredients.forEach((ingredient) => {
+    for (const ingredient of recipe.ingredients) {
       const displayQty = ingredient.quantity;
       const displayUnit = ingredient.unit;
       const displayQtyAndUnit = !displayQty && !displayUnit;
@@ -54,7 +54,7 @@ const recipeFactory = (recipe) => {
             </div>
         </div>
       `;
-    });
+    }
     return html;
   };
 

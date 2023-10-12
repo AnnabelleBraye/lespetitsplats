@@ -43,27 +43,25 @@ const generateSelectList = (selectId) => {
     storageUtils.getDataStorage(`select-tags`, [])
   );
 
-  // Map {[str name, boolean isSelected]}
-  const eltsMap = recipes.reduce((prev, curr) => {
+  let eltsMap = new Map();
+  for (const recipe of recipes) {
     const tags = [...selectTagsList.keys()];
     switch (selectId) {
       case 'ingredients-select':
-        curr.ingredients.forEach((elt) => {
-          prev = setMapItem(elt.ingredient, prev, tags);
-        });
+        for (const elt of recipe.ingredients) {
+          eltsMap = setMapItem(elt.ingredient, eltsMap, tags);
+        }
         break;
       case 'appliances-select':
-        prev = setMapItem(curr.appliance, prev, tags);
+        eltsMap = setMapItem(recipe.appliance, eltsMap, tags);
         break;
       case 'ustensils-select':
-        curr.ustensils.forEach((elt) => {
-          prev = setMapItem(elt, prev, tags);
-        });
+        for (const elt of recipe.ustensils) {
+          eltsMap = setMapItem(elt, eltsMap, tags);
+        }
         break;
     }
-
-    return prev;
-  }, new Map());
+  }
 
   const selectElt = document.getElementById(selectId);
   let orderedMap = orderMapByName(eltsMap);
@@ -94,9 +92,9 @@ const orderMapByName = (map) => {
   const names = [...map.keys()];
   const sortedNames = names.sort((a, b) => a.localeCompare(b));
   const newMap = new Map();
-  sortedNames.forEach((name) => {
+  for (const name of sortedNames) {
     newMap.set(name, map.get(name));
-  });
+  }
   return newMap;
 };
 
@@ -165,7 +163,7 @@ const updateSelectList = (selectElt, eltsMap) => {
   ulElt.innerHTML = '';
   if (eltsMap && eltsMap.size > 0) {
     showNoTagElt(selectElt, false);
-    eltsMap.forEach((value, key) => {
+    for (const [key, value] of eltsMap) {
       let classes =
         'flex justify-between py-2.5 p-4 hover:bg-yellow-400 aria-selected:bg-yellow-400 aria-selected:font-bold focus:outline focus:outline-2 focus:bg-yellow-400';
 
@@ -187,7 +185,7 @@ const updateSelectList = (selectElt, eltsMap) => {
       const imgElt = liElt.querySelector('img');
       imgElt.tabIndex = 0;
       ulElt.appendChild(liElt);
-    });
+    }
   } else {
     showNoTagElt(selectElt, true);
   }
@@ -229,12 +227,12 @@ const closeOthersLists = (selectId) => {
     `[id*="-select"]:not(#${selectId})`
   );
 
-  othersLists.forEach((select) => {
+  for (const select of othersLists) {
     const listbox = select.querySelector('[role="listbox"]');
     if (!listbox.classList.contains('hidden')) {
       closeList(select);
     }
-  });
+  }
 };
 
 /**
