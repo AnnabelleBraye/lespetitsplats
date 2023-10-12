@@ -109,7 +109,7 @@ const filterRecipesByAllTags = (recipes, tags) => {
   const list2 = filterRecipesByAppliances(recipes, appliancesList);
   const list3 = filterRecipesByUstensils(recipes, ustensilsList);
 
-  for (const recipe of recipes) {
+  recipes.forEach((recipe) => {
     if (
       list1.includes(recipe) &&
       list2.includes(recipe) &&
@@ -117,7 +117,7 @@ const filterRecipesByAllTags = (recipes, tags) => {
     ) {
       filteredRecipes.push(recipe);
     }
-  }
+  });
 
   localStorage.setItem('recipes-filtered', JSON.stringify(filteredRecipes));
   return filteredRecipes;
