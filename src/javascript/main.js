@@ -4,6 +4,7 @@ import recipesUtils from './utils/recipes.js';
 import multiselect from '../component/multiselect.js';
 import storageUtils from './utils/storage-utils.js';
 import tagFunctions from '../component/tag.js';
+import testAlgo from '../test/test.js';
 
 const searchBarElt = document.getElementById('search-bar');
 
@@ -71,10 +72,10 @@ const init = async () => {
 
   initMultiselects();
 
-  document.addEventListener(
-    'DOMContentLoaded',
-    recipesUtils.updateDynamicContent()
-  );
+  document.addEventListener('DOMContentLoaded', () => {
+    recipesUtils.updateDynamicContent();
+    testAlgo();
+  });
 };
 
 const handleKeydown = (e) => {

@@ -12,7 +12,6 @@ const filterList = (filter) => {
   const oldFilter = storageUtils.getDataStorage('search-filter', '');
   let filteredList = [];
 
-  const start = performance.now();
   const tagsList = new Map(storageUtils.getDataStorage('select-tags', []));
   if (filter) {
     if (filter.length >= 3) {
@@ -33,8 +32,6 @@ const filterList = (filter) => {
 
     updateContent(filteredList, filter);
   }
-  const end = performance.now();
-  console.log(`It tooks ${end - start} ms`);
 };
 
 /**
