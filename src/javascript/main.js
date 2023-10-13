@@ -72,9 +72,9 @@ const init = async () => {
 
   initMultiselects();
 
-  document.addEventListener('DOMContentLoaded', async () => {
+  document.addEventListener('DOMContentLoaded', () => {
     recipesUtils.updateDynamicContent();
-    await testAlgo();
+    testAlgo();
   });
 };
 
