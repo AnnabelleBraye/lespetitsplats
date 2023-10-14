@@ -44,20 +44,24 @@ const generateSelectList = (selectId) => {
   );
 
   let eltsMap = new Map();
-  for (const recipe of recipes) {
+  for (let i = 0; i < recipes.length; i++) {
     const tags = [...selectTagsList.keys()];
     switch (selectId) {
       case 'ingredients-select':
-        for (const elt of recipe.ingredients) {
-          eltsMap = setMapItem(elt.ingredient, eltsMap, tags);
+        for (let j = 0; j < recipes[i].ingredients.length; j++) {
+          eltsMap = setMapItem(
+            recipes[i].ingredients[j].ingredient,
+            eltsMap,
+            tags
+          );
         }
         break;
       case 'appliances-select':
-        eltsMap = setMapItem(recipe.appliance, eltsMap, tags);
+        eltsMap = setMapItem(recipes[i].appliance, eltsMap, tags);
         break;
       case 'ustensils-select':
-        for (const elt of recipe.ustensils) {
-          eltsMap = setMapItem(elt, eltsMap, tags);
+        for (let j = 0; j < recipes[i].ustensils.length; j++) {
+          eltsMap = setMapItem(recipes[i].ustensils[j], eltsMap, tags);
         }
         break;
     }
@@ -92,8 +96,8 @@ const orderMapByName = (map) => {
   const names = [...map.keys()];
   const sortedNames = names.sort((a, b) => a.localeCompare(b));
   const newMap = new Map();
-  for (const name of sortedNames) {
-    newMap.set(name, map.get(name));
+  for (let i = 0; i < sortedNames.length; i++) {
+    newMap.set(sortedNames[i], map.get(sortedNames[i]));
   }
   return newMap;
 };
@@ -227,10 +231,10 @@ const closeOthersLists = (selectId) => {
     `[id*="-select"]:not(#${selectId})`
   );
 
-  for (const select of othersLists) {
-    const listbox = select.querySelector('[role="listbox"]');
+  for (let i = 0; i < othersLists.length; i++) {
+    const listbox = othersLists[i].querySelector('[role="listbox"]');
     if (!listbox.classList.contains('hidden')) {
-      closeList(select);
+      closeList(othersLists[i]);
     }
   }
 };

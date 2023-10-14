@@ -31,14 +31,14 @@ const initMultiselects = () => {
     const multiselects = document.querySelectorAll(
       '#ingredients-select, #appliances-select, #ustensils-select'
     );
-    for (const select of multiselects) {
-      multiselect.closeList(select);
+    for (let i = 0; i < multiselects.length; i++) {
+      multiselect.closeList(multiselects[i]);
     }
   });
 
-  for (const select of multiselects) {
-    select.addEventListener('click', multiselect.openList, false);
-    select.tabIndex = 0;
+  for (let i = 0; i < multiselects.length; i++) {
+    multiselects[i].addEventListener('click', multiselect.openList, false);
+    multiselects[i].tabIndex = 0;
   }
 };
 

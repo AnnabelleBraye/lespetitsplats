@@ -17,9 +17,9 @@ const filterList = (filter) => {
     if (filter.length >= 3) {
       filteredList = recipesUtils.filterRecipesByAllTags(recipes, tagsList);
       const list = [];
-      for (const elt of filteredList) {
-        if (filterByNameDescIngredient(elt, filter)) {
-          list.push(elt);
+      for (let i = 0; i < filteredList.length; i++) {
+        if (filterByNameDescIngredient(filteredList[i], filter)) {
+          list.push(filteredList[i]);
         }
       }
       filteredList = list;

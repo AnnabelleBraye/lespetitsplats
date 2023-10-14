@@ -40,16 +40,20 @@ const recipeFactory = (recipe) => {
   const createIngredientsList = () => {
     let html = '';
 
-    for (const ingredient of recipe.ingredients) {
-      const displayQty = ingredient.quantity;
-      const displayUnit = ingredient.unit;
+    for (let i = 0; i < recipe.ingredients.length; i++) {
+      const displayQty = recipe.ingredients[i].quantity;
+      const displayUnit = recipe.ingredients[i].unit;
       const displayQtyAndUnit = !displayQty && !displayUnit;
       html += `
         <div class="flex flex-col">
-          <p>${ingredient.ingredient}</p>
+          <p>${recipe.ingredients[i].ingredient}</p>
             <div>
-              ${displayQty ? `<span>${ingredient.quantity}</span>` : ''}
-              ${displayUnit ? `<span>${ingredient.unit}</span>` : ''}
+              ${
+                displayQty
+                  ? `<span>${recipe.ingredients[i].quantity}</span>`
+                  : ''
+              }
+              ${displayUnit ? `<span>${recipe.ingredients[i].unit}</span>` : ''}
               ${displayQtyAndUnit ? '<span>-</span>' : ''}
             </div>
         </div>

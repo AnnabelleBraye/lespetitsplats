@@ -8,22 +8,22 @@ import stringUtils from './string-utils.js';
  */
 const filterMap = (map, filter) => {
   const filteredList = [];
-  for (const elt of [...map]) {
+  for (let i = 0; i < [...map].length; i++) {
     const normalizedName = stringUtils.normalizeNFD(
-      stringUtils.trimAndLowerCase(elt[0])
+      stringUtils.trimAndLowerCase([...map][i][0])
     );
     const normalizedFilter = stringUtils.normalizeNFD(
       stringUtils.trimAndLowerCase(filter)
     );
 
     if (normalizedName.includes(normalizedFilter)) {
-      filteredList.push(elt);
+      filteredList.push([...map][i]);
     }
   }
 
   const filteredMap = new Map();
-  for (const elt of filteredList) {
-    filteredMap.set(elt[0], elt[1]);
+  for (let i = 0; i < filteredList.length; i++) {
+    filteredMap.set(filteredList[i][0], filteredList[i][1]);
   }
 
   return filteredMap;

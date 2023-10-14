@@ -19,8 +19,8 @@ const updateDynamicContent = () => {
     '#ingredients-select, #appliances-select, #ustensils-select'
   );
 
-  for (const select of multiselects) {
-    multiselect.generateSelectList(select.id);
+  for (let i = 0; i < multiselects.length; i++) {
+    multiselect.generateSelectList(multiselects[i].id);
   }
 };
 
@@ -36,8 +36,8 @@ const generateRecipesList = () => {
 
   if (recipes && recipes.length > 0) {
     showRecipesList(true);
-    for (const recipe of recipes) {
-      const recipeTemplate = recipeFactory(recipe);
+    for (let i = 0; i < recipes.length; i++) {
+      const recipeTemplate = recipeFactory(recipes[i]);
       const recipeElt = recipeTemplate.getRecipeCard();
       recipesListElt.appendChild(recipeElt);
     }
@@ -109,13 +109,13 @@ const filterRecipesByAllTags = (recipes, tags) => {
   const list1 = filterRecipesByIngredients(recipes, ingredientsList);
   const list2 = filterRecipesByAppliances(recipes, appliancesList);
   const list3 = filterRecipesByUstensils(recipes, ustensilsList);
-  for (const recipe of recipes) {
+  for (let i = 0; i < recipes.length; i++) {
     if (
-      list1.includes(recipe) &&
-      list2.includes(recipe) &&
-      list3.includes(recipe)
+      list1.includes(recipes[i]) &&
+      list2.includes(recipes[i]) &&
+      list3.includes(recipes[i])
     ) {
-      filteredRecipes.push(recipe);
+      filteredRecipes.push(recipes[i]);
     }
   }
 
@@ -140,9 +140,9 @@ const updateRecipesFilteredBySearchAndAllTags = (tags, isAddingTag) => {
   const filter = storageUtils.getDataStorage('search-filter', '');
   if (filter && filter.length >= 3) {
     const list = [];
-    for (const recipe of recipes) {
-      if (searchBar.filterByNameDescIngredient(recipe, filter)) {
-        list.push(recipe);
+    for (let i = 0; i < recipes.length; i++) {
+      if (searchBar.filterByNameDescIngredient(recipes[i], filter)) {
+        list.push(recipes[i]);
       }
     }
 
@@ -161,23 +161,25 @@ const updateRecipesFilteredBySearchAndAllTags = (tags, isAddingTag) => {
 const filterRecipesByIngredients = (recipesList, tagsList) => {
   const newList = [];
 
-  for (const recipe of recipesList) {
+  for (let i = 0; i < recipesList.length; i++) {
     let isAllTagsPresent = true;
 
     const namesList = [];
-    for (const elt of recipe.ingredients) {
-      namesList.push(stringUtils.formatSelectName(elt.ingredient));
+    for (let j = 0; j < recipesList[i].ingredients.length; j++) {
+      namesList.push(
+        stringUtils.formatSelectName(recipesList[i].ingredients[j].ingredient)
+      );
     }
 
-    for (const tag of tagsList) {
-      if (!namesList.includes(tag)) {
+    for (let j = 0; j < tagsList.length; j++) {
+      if (!namesList.includes(tagsList[j])) {
         isAllTagsPresent = false;
         break;
       }
     }
 
     if (isAllTagsPresent) {
-      newList.push(recipe);
+      newList.push(recipesList[i]);
     }
   }
 
@@ -193,18 +195,18 @@ const filterRecipesByIngredients = (recipesList, tagsList) => {
 const filterRecipesByAppliances = (recipesList, tagsList) => {
   const newList = [];
 
-  for (const recipe of recipesList) {
+  for (let i = 0; i < recipesList.length; i++) {
     let isAllTagsPresent = true;
 
-    for (const tag of tagsList) {
-      if (recipe.appliance !== tag) {
+    for (let j = 0; j < tagsList.length; j++) {
+      if (recipesList[i].appliance !== tagsList[j]) {
         isAllTagsPresent = false;
         break;
       }
     }
 
     if (isAllTagsPresent) {
-      newList.push(recipe);
+      newList.push(recipesList[i]);
     }
   }
 
@@ -220,23 +222,23 @@ const filterRecipesByAppliances = (recipesList, tagsList) => {
 const filterRecipesByUstensils = (recipesList, tagsList) => {
   const newList = [];
 
-  for (const recipe of recipesList) {
+  for (let i = 0; i < recipesList.length; i++) {
     let isAllTagsPresent = true;
 
     const namesList = [];
-    for (const elt of recipe.ustensils) {
-      namesList.push(stringUtils.formatSelectName(elt));
+    for (let j = 0; j < recipesList[i].ustensils.length; j++) {
+      namesList.push(stringUtils.formatSelectName(recipesList[i].ustensils[j]));
     }
 
-    for (const tag of tagsList) {
-      if (!namesList.includes(tag)) {
+    for (let j = 0; j < tagsList.length; j++) {
+      if (!namesList.includes(tagsList[j])) {
         isAllTagsPresent = false;
         break;
       }
     }
 
     if (isAllTagsPresent) {
-      newList.push(recipe);
+      newList.push(recipesList[i]);
     }
   }
 
