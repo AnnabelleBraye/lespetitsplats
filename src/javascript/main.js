@@ -74,7 +74,7 @@ const init = async () => {
 
   document.addEventListener('DOMContentLoaded', () => {
     recipesUtils.updateDynamicContent();
-    testAlgo();
+    // testAlgo();
   });
 };
 
