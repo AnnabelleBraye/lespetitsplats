@@ -7,30 +7,34 @@ import stringUtils from '../javascript/utils/string-utils.js';
  * Then finally update dynamic content
  */
 const filterList = (filter) => {
-  const recipes = storageUtils.getDataStorage('recipes', []);
-  let listToFilter = storageUtils.getDataStorage('recipes-filtered', recipes);
-  const oldFilter = storageUtils.getDataStorage('search-filter', '');
-  let filteredList = [];
+  const isFilterValid = checkFilterValidity(filter);
 
-  const tagsList = new Map(storageUtils.getDataStorage('select-tags', []));
-  if (filter) {
-    if (filter.length >= 3) {
+  if (isFilterValid) {
+    const recipes = storageUtils.getDataStorage('recipes', []);
+    let listToFilter = storageUtils.getDataStorage('recipes-filtered', recipes);
+    const oldFilter = storageUtils.getDataStorage('search-filter', '');
+    let filteredList = [];
+
+    const tagsList = new Map(storageUtils.getDataStorage('select-tags', []));
+    if (filter) {
+      if (filter.length >= 3) {
+        filteredList = recipesUtils.filterRecipesByAllTags(recipes, tagsList);
+
+        filteredList = filteredList.filter((elt) =>
+          filterByNameDescIngredient(elt, filter)
+        );
+      } else if (oldFilter.length < 3 && oldFilter.length > filter.length) {
+        filteredList = listToFilter;
+      } else {
+        filteredList = recipesUtils.filterRecipesByAllTags(recipes, tagsList);
+      }
+
+      updateContent(filteredList, filter);
+    } else if (oldFilter.length >= 3 && !filter) {
       filteredList = recipesUtils.filterRecipesByAllTags(recipes, tagsList);
 
-      filteredList = filteredList.filter((elt) =>
-        filterByNameDescIngredient(elt, filter)
-      );
-    } else if (oldFilter.length < 3 && oldFilter.length > filter.length) {
-      filteredList = listToFilter;
-    } else {
-      filteredList = recipesUtils.filterRecipesByAllTags(recipes, tagsList);
+      updateContent(filteredList, filter);
     }
-
-    updateContent(filteredList, filter);
-  } else if (oldFilter.length >= 3 && !filter) {
-    filteredList = recipesUtils.filterRecipesByAllTags(recipes, tagsList);
-
-    updateContent(filteredList, filter);
   }
 };
 
@@ -85,6 +89,16 @@ const resetFilter = () => {
   const searchBarElt = document.getElementById('search-bar');
   searchBarElt.value = '';
   filterList('');
+};
+
+const checkFilterValidity = (filter) => {
+  const regex = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+  let isFilterValid = false;
+  if (!regex.test(filter)) {
+    isFilterValid = true;
+  }
+  console.log(`isFilterValid`, isFilterValid);
+  return isFilterValid;
 };
 
 export default {
