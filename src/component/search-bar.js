@@ -97,7 +97,6 @@ const checkFilterValidity = (filter) => {
   if (!regex.test(filter)) {
     isFilterValid = true;
   }
-  console.log(`isFilterValid`, isFilterValid);
   return isFilterValid;
 };
 
