@@ -1,6 +1,7 @@
 import recipesUtils from '../javascript/utils/recipes.js';
 import storageUtils from '../javascript/utils/storage-utils.js';
 import stringUtils from '../javascript/utils/string-utils.js';
+import checkFilterValidity from '../javascript/utils/check-validity-utils.js';
 
 /**
  * Starts filter at 3 caracters and update recipes-filtered list and search-filter in storage
@@ -89,15 +90,6 @@ const resetFilter = () => {
   const searchBarElt = document.getElementById('search-bar');
   searchBarElt.value = '';
   filterList('');
-};
-
-const checkFilterValidity = (filter) => {
-  const regex = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
-  let isFilterValid = false;
-  if (!regex.test(filter)) {
-    isFilterValid = true;
-  }
-  return isFilterValid;
 };
 
 export default {

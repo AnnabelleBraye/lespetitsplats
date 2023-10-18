@@ -1,3 +1,4 @@
+import checkFilterValidity from '../javascript/utils/check-validity-utils.js';
 import mapUtils from '../javascript/utils/map-utils.js';
 import storageUtils from '../javascript/utils/storage-utils.js';
 import stringUtils from '../javascript/utils/string-utils.js';
@@ -153,8 +154,12 @@ const filterAndUpdate = (e) => {
   const selectList = new Map(
     storageUtils.getDataStorage(`${selectElt.id}-list`, [])
   );
-  const filteredMap = mapUtils.filterMap(selectList, e.target.value);
-  updateSelectList(selectElt, filteredMap);
+  const isFilterValid = checkFilterValidity(e.target.value);
+
+  if (isFilterValid) {
+    const filteredMap = mapUtils.filterMap(selectList, e.target.value);
+    updateSelectList(selectElt, filteredMap);
+  }
 };
 
 /**
