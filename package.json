@@ -2,6 +2,7 @@
   "name": "lespetitsplats",
   "dependencies": {
     "autoprefixer": "^10.4.16",
+    "eslint": "^8.51.0",
     "normalize-scss": "^7.0.1",
     "normalize.css": "^8.0.1",
     "postcss": "^8.4.30"
@@ -10,6 +11,7 @@
     "tailwindcss": "^3.3.3"
   },
   "scripts": {
-    "build": "tailwindcss -i ./src/css/main.css -o ./dist/style.css --watch"
+    "build": "tailwindcss -i ./src/css/main.css -o ./dist/style.css --watch",
+    "lint": "eslint ."
   }
 }
