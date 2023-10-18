@@ -1,4 +1,5 @@
 {
+  "name": "lespetitsplats",
   "dependencies": {
     "autoprefixer": "^10.4.16",
     "normalize-scss": "^7.0.1",

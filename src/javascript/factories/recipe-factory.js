@@ -8,7 +8,9 @@ const recipeFactory = (recipe) => {
 
     recipeItemElt.innerHTML = `
       <div class="relative rounded-t-3xl overflow-hidden">
-        <img src="${srcImg}" class="rounded-t-3xl h-64 w-full object-cover">
+        <img src="${srcImg}" alt="${
+      recipe.name
+    }" class="rounded-t-3xl h-64 w-full object-cover">
         ${
           displayTime
             ? `<div class='absolute right-5 top-5 bg-yellow-400 rounded-xl px-3.5 py-1'>
